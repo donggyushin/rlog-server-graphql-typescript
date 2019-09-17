@@ -3,8 +3,11 @@ import graphqlHttp from 'express-graphql';
 import expressPlayground from 'graphql-playground-middleware-express';
 import cors from 'cors';
 import schema from './schema'
+import './mongoose/mongoose'
+import './models'
 const app: express.Application = express();
 const PORT: number = 4000;
+
 
 // Allow cross-origin requests
 app.use(cors())
