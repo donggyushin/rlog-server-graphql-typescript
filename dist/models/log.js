@@ -19,6 +19,18 @@ var LogSchema = new mongoose_1.default.Schema({
     },
     image: {
         type: String
+    },
+    year: {
+        type: String,
+        default: new Date().getFullYear()
+    },
+    month: {
+        type: String,
+        default: new Date().getMonth()
+    },
+    day: {
+        type: String,
+        default: new Date().getDate()
     }
 });
 var LogModel = mongoose_1.default.model('Log', LogSchema);

@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var user_1 = __importDefault(require("../models/user"));
+var log_1 = __importDefault(require("../models/log"));
 // Mutations
 exports.updateUserPassword = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var id, password, newPassword, user;
@@ -112,6 +113,19 @@ exports.addNewUser = function (parent, args) { return __awaiter(void 0, void 0, 
     });
 }); };
 // Queries
+exports.getLogs = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, logs;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = parent.id;
+                return [4 /*yield*/, log_1.default.find({ userId: id })];
+            case 1:
+                logs = _a.sent();
+                return [2 /*return*/, logs];
+        }
+    });
+}); };
 exports.getUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var id, user;
     return __generator(this, function (_a) {

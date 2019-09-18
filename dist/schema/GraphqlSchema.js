@@ -34,6 +34,13 @@ var RootQuery = new graphql_1.GraphQLObjectType({
         logs: {
             type: new graphql_1.GraphQLList(log_1.default),
             resolve: logResolvers_1.getAllLogs
+        },
+        log: {
+            type: log_1.default,
+            args: {
+                id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
+            },
+            resolve: logResolvers_1.getALog
         }
     }
 });
@@ -81,6 +88,38 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 newPassword: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
             },
             resolve: userResolvers_1.updateUserPassword
+        },
+        addNewLog: {
+            type: log_1.default,
+            args: {
+                title: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                image: { type: graphql_1.GraphQLString }
+            },
+            resolve: logResolvers_1.newLog
+        },
+        changeLogTitle: {
+            type: log_1.default,
+            args: {
+                id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                newTitle: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: logResolvers_1.changeLogTitle
+        },
+        changeLogImage: {
+            type: log_1.default,
+            args: {
+                id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                newImage: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: logResolvers_1.changeLogImage
+        },
+        deleteLog: {
+            type: log_1.default,
+            args: {
+                id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
+            },
+            resolve: logResolvers_1.deleteALog
         }
     }
 });

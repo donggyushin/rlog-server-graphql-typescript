@@ -40,7 +40,105 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var log_1 = __importDefault(require("../models/log"));
+var user_1 = __importDefault(require("../models/user"));
+// Mutations
+exports.deleteALog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, logToDelete;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = args.id;
+                return [4 /*yield*/, log_1.default.findById(id)];
+            case 1:
+                logToDelete = _a.sent();
+                return [4 /*yield*/, logToDelete.remove()];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, logToDelete];
+        }
+    });
+}); };
+exports.changeLogImage = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, newImage, log;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = args.id, newImage = args.newImage;
+                return [4 /*yield*/, log_1.default.findById(id)];
+            case 1:
+                log = _a.sent();
+                log.image = newImage;
+                return [4 /*yield*/, log.save()];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, log];
+        }
+    });
+}); };
+exports.changeLogTitle = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, newTitle, log;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = args.id, newTitle = args.newTitle;
+                return [4 /*yield*/, log_1.default.findById(id)];
+            case 1:
+                log = _a.sent();
+                log.title = newTitle;
+                return [4 /*yield*/, log.save()];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, log];
+        }
+    });
+}); };
+exports.newLog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var title, userId, image, log;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                title = args.title, userId = args.userId, image = args.image;
+                return [4 /*yield*/, new log_1.default({
+                        title: title,
+                        userId: userId,
+                        image: image
+                    })];
+            case 1:
+                log = _a.sent();
+                return [4 /*yield*/, log.save()];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, log];
+        }
+    });
+}); };
 // Queries
+exports.getAUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userId = parent.userId;
+                return [4 /*yield*/, user_1.default.findById(userId)];
+            case 1:
+                user = _a.sent();
+                return [2 /*return*/, user];
+        }
+    });
+}); };
+exports.getALog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, log;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = args.id;
+                return [4 /*yield*/, log_1.default.findById(id)];
+            case 1:
+                log = _a.sent();
+                return [2 /*return*/, log];
+        }
+    });
+}); };
 exports.getAllLogs = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var logs;
     return __generator(this, function (_a) {
