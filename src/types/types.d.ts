@@ -12,3 +12,14 @@ export interface IUser extends mongoose.Document {
     profilePhoto: string
 }
 
+export interface UserResponseType {
+    ok: boolean,
+    error: string,
+    user: IUser
+}
+
+export interface UsersResponseType {
+    ok: boolean,
+    error: string,
+    users: IUser[]
+}

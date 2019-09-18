@@ -8,6 +8,8 @@ var express_graphql_1 = __importDefault(require("express-graphql"));
 var graphql_playground_middleware_express_1 = __importDefault(require("graphql-playground-middleware-express"));
 var cors_1 = __importDefault(require("cors"));
 var schema_1 = __importDefault(require("./schema"));
+require("./mongoose/mongoose");
+require("./models");
 var app = express_1.default();
 var PORT = 4000;
 // Allow cross-origin requests

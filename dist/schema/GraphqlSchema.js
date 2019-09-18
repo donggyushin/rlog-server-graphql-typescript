@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var graphql_1 = require("graphql");
 var test_1 = __importDefault(require("../graphqlObjectTypes/test"));
+var user_1 = __importDefault(require("../graphqlObjectTypes/user"));
 var testResolves_1 = require("../resolves/testResolves");
+var userResolvers_1 = require("../resolves/userResolvers");
 var RootQuery = new graphql_1.GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -15,6 +17,17 @@ var RootQuery = new graphql_1.GraphQLObjectType({
                 id: { type: graphql_1.GraphQLID }
             },
             resolve: testResolves_1.testResolver
+        },
+        users: {
+            type: new graphql_1.GraphQLList(user_1.default),
+            resolve: userResolvers_1.allUsers
+        },
+        user: {
+            type: user_1.default,
+            args: {
+                id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
+            },
+            resolve: userResolvers_1.getUser
         }
     }
 });
@@ -28,6 +41,22 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 name: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
             },
             resolve: testResolves_1.addNewTest
+        },
+        addNewUser: {
+            type: user_1.default,
+            args: {
+                name: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                email: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                phone: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: userResolvers_1.addNewUser
+        },
+        deleteUser: {
+            type: user_1.default,
+            args: {
+                id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
+            },
+            resolve: userResolvers_1.deleteUser
         }
     }
 });
