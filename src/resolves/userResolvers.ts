@@ -1,5 +1,6 @@
 import UserModel from '../models/user'
 import { IUser } from '../types/types';
+import LogModel from '../models/log';
 
 // Mutations
 
@@ -41,6 +42,12 @@ export const addNewUser = async (parent, args) => {
 }
 
 // Queries
+
+export const getLogs = async (parent, args) => {
+    const { id } = parent;
+    const logs = await LogModel.find({ userId: id })
+    return logs
+}
 
 export const getUser = async (parent, args) => {
     const { id } = args;

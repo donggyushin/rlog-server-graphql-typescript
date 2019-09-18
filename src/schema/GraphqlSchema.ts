@@ -3,6 +3,8 @@ import TestType from '../graphqlObjectTypes/test'
 import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
 import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword } from '../resolves/userResolvers'
+import LogType from '../graphqlObjectTypes/log'
+import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog } from '../resolves/logResolvers'
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -24,6 +26,17 @@ const RootQuery: GraphQLObjectType = new GraphQLObjectType({
                 id: { type: new GraphQLNonNull(GraphQLID) }
             },
             resolve: getUser
+        },
+        logs: {
+            type: new GraphQLList(LogType),
+            resolve: getAllLogs
+        },
+        log: {
+            type: LogType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) }
+            },
+            resolve: getALog
         }
     }
 })
@@ -72,6 +85,38 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 newPassword: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: updateUserPassword
+        },
+        addNewLog: {
+            type: LogType,
+            args: {
+                title: { type: new GraphQLNonNull(GraphQLString) },
+                userId: { type: new GraphQLNonNull(GraphQLString) },
+                image: { type: GraphQLString }
+            },
+            resolve: newLog
+        },
+        changeLogTitle: {
+            type: LogType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLString) },
+                newTitle: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: changeLogTitle
+        },
+        changeLogImage: {
+            type: LogType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLString) },
+                newImage: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: changeLogImage
+        },
+        deleteLog: {
+            type: LogType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) }
+            },
+            resolve: deleteALog
         }
     }
 })

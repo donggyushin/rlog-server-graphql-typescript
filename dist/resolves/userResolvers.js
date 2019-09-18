@@ -41,6 +41,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var user_1 = __importDefault(require("../models/user"));
 // Mutations
+exports.updateUserPassword = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, password, newPassword, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = args.id, password = args.password, newPassword = args.newPassword;
+                return [4 /*yield*/, user_1.default.findById(id)];
+            case 1:
+                user = _a.sent();
+                if (user.password === password) {
+                    user.password = newPassword;
+                    user.save();
+                    return [2 /*return*/, user];
+                }
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.updateUserProfileImage = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, profileImage, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = args.id, profileImage = args.profileImage;
+                return [4 /*yield*/, user_1.default.findById(id)];
+            case 1:
+                user = _a.sent();
+                user.profilePhoto = profileImage;
+                user.save();
+                return [2 /*return*/, user];
+        }
+    });
+}); };
 exports.deleteUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var id, userToDelete;
     return __generator(this, function (_a) {
@@ -50,53 +83,43 @@ exports.deleteUser = function (parent, args) { return __awaiter(void 0, void 0, 
                 return [4 /*yield*/, user_1.default.findById(id)];
             case 1:
                 userToDelete = _a.sent();
-                userToDelete.remove();
+                return [4 /*yield*/, userToDelete.remove()];
+            case 2:
+                _a.sent();
                 return [2 /*return*/, userToDelete];
         }
     });
 }); };
 exports.addNewUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var name, email, phone, user, err_1;
+    var name, email, phone, password, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                name = args.name, email = args.email, phone = args.phone;
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 6, , 7]);
+                name = args.name, email = args.email, phone = args.phone, password = args.password;
                 return [4 /*yield*/, new user_1.default({
                         name: name,
                         email: email,
-                        phone: phone
+                        phone: phone,
+                        password: password
                     })];
-            case 2:
+            case 1:
                 user = _a.sent();
-                if (!(user === null)) return [3 /*break*/, 3];
-                return [2 /*return*/, user];
-            case 3: return [4 /*yield*/, user.save()];
-            case 4:
+                return [4 /*yield*/, user.save()];
+            case 2:
                 _a.sent();
                 return [2 /*return*/, user];
-            case 5: return [3 /*break*/, 7];
-            case 6:
-                err_1 = _a.sent();
-                return [2 /*return*/, err_1.message];
-            case 7: return [2 /*return*/];
         }
     });
 }); };
 // Queries
 exports.getUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, user, err_2;
+    var id, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = args.id;
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, user_1.default.findById(id)];
-            case 2:
+            case 1:
                 user = _a.sent();
                 if (user === null) {
                     return [2 /*return*/, user];
@@ -104,28 +127,18 @@ exports.getUser = function (parent, args) { return __awaiter(void 0, void 0, voi
                 else {
                     return [2 /*return*/, user];
                 }
-                return [3 /*break*/, 4];
-            case 3:
-                err_2 = _a.sent();
-                return [2 /*return*/, err_2.message];
-            case 4: return [2 /*return*/];
+                return [2 /*return*/];
         }
     });
 }); };
 exports.allUsers = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, err_3;
+    var users;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, user_1.default.find()];
+            case 0: return [4 /*yield*/, user_1.default.find()];
             case 1:
                 users = _a.sent();
                 return [2 /*return*/, users];
-            case 2:
-                err_3 = _a.sent();
-                return [2 /*return*/, err_3.message];
-            case 3: return [2 /*return*/];
         }
     });
 }); };

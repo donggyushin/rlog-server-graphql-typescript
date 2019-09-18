@@ -19,7 +19,11 @@ var UserSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true
     },
-    profilePhoto: String
+    profilePhoto: String,
+    password: {
+        type: String,
+        required: true,
+    }
 });
 var UserModel = mongoose_1.default.model('User', UserSchema);
 exports.default = UserModel;

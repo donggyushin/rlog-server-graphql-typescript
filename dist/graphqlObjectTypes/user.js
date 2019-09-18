@@ -8,7 +8,8 @@ var UserType = new graphql_1.GraphQLObjectType({
         name: { type: graphql_1.GraphQLString },
         email: { type: graphql_1.GraphQLString },
         phone: { type: graphql_1.GraphQLString },
-        profilePhoto: { type: graphql_1.GraphQLString }
+        profilePhoto: { type: graphql_1.GraphQLString },
+        password: { type: graphql_1.GraphQLString }
     }); }
 });
 exports.default = UserType;

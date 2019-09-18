@@ -16,6 +16,18 @@ const LogSchema: mongoose.Schema = new mongoose.Schema({
     },
     image: {
         type: String
+    },
+    year: {
+        type: String,
+        default: new Date().getFullYear()
+    },
+    month: {
+        type: String,
+        default: new Date().getMonth()
+    },
+    day: {
+        type: String,
+        default: new Date().getDate()
     }
 })
 

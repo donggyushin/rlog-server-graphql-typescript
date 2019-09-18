@@ -1,4 +1,6 @@
-import { GraphQLObjectType, GraphQLID, GraphQLString } from 'graphql'
+import { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList } from 'graphql'
+import LogType from './log'
+import { getLogs } from '../resolves/userResolvers'
 
 const UserType: GraphQLObjectType = new GraphQLObjectType({
     name: 'User',
@@ -8,7 +10,11 @@ const UserType: GraphQLObjectType = new GraphQLObjectType({
         email: { type: GraphQLString },
         phone: { type: GraphQLString },
         profilePhoto: { type: GraphQLString },
-        password: { type: GraphQLString }
+        password: { type: GraphQLString },
+        logs: {
+            type: new GraphQLList(LogType),
+            resolve: getLogs
+        }
     })
 })
 
