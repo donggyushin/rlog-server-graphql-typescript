@@ -17,7 +17,12 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    profilePhoto: String
+    profilePhoto: String,
+    password: {
+        type: String,
+        required: true,
+
+    }
 })
 
 const UserModel: mongoose.Model<IUser> = mongoose.model<IUser>('User', UserSchema)

@@ -10,7 +10,8 @@ export interface IUser extends mongoose.Document {
     name: string,
     email: string,
     phone: string,
-    profilePhoto: string
+    profilePhoto: string,
+    password: string
 }
 
 export interface ILog extends mongoose.Document {

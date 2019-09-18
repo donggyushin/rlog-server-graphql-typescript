@@ -2,7 +2,8 @@ import { GraphQLObjectType, GraphQLID, GraphQLSchema, GraphQLNonNull, GraphQLStr
 import TestType from '../graphqlObjectTypes/test'
 import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
-import { allUsers, addNewUser, getUser, deleteUser } from '../resolves/userResolvers'
+import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword } from '../resolves/userResolvers'
+
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -43,7 +44,8 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
             args: {
                 name: { type: new GraphQLNonNull(GraphQLString) },
                 email: { type: new GraphQLNonNull(GraphQLString) },
-                phone: { type: new GraphQLNonNull(GraphQLString) }
+                phone: { type: new GraphQLNonNull(GraphQLString) },
+                password: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: addNewUser
         },
@@ -53,6 +55,23 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 id: { type: new GraphQLNonNull(GraphQLID) }
             },
             resolve: deleteUser
+        },
+        updateUserProfileImage: {
+            type: UserType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) },
+                profileImage: { type: GraphQLString }
+            },
+            resolve: updateUserProfileImage
+        },
+        updateUserPassword: {
+            type: UserType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLString) },
+                password: { type: new GraphQLNonNull(GraphQLString) },
+                newPassword: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: updateUserPassword
         }
     }
 })

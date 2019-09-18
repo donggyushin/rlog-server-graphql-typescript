@@ -1,59 +1,63 @@
 import UserModel from '../models/user'
-import { IUser, UsersResponseType, UserResponseType } from '../types/types';
+import { IUser } from '../types/types';
 
 // Mutations
+
+export const updateUserPassword = async (parent, args) => {
+    const { id, password, newPassword } = args;
+    const user = await UserModel.findById(id);
+    if (user.password === password) {
+        user.password = newPassword
+        user.save()
+        return user
+    }
+}
+
+export const updateUserProfileImage = async (parent, args) => {
+    const { id, profileImage } = args;
+    const user = await UserModel.findById(id)
+    user.profilePhoto = profileImage
+    user.save()
+    return user
+}
 
 export const deleteUser = async (parent, args) => {
     const { id } = args;
     const userToDelete: IUser = await UserModel.findById(id);
-    userToDelete.remove()
+    await userToDelete.remove()
     return userToDelete
 }
 
 export const addNewUser = async (parent, args) => {
-    const { name, email, phone } = args;
-    try {
-        const user: IUser = await new UserModel({
-            name,
-            email,
-            phone
-        })
-
-        if (user === null) {
-            return user
-        } else {
-            await user.save()
-            return user
-        }
-    } catch (err) {
-        return err.message
-    }
-
+    const { name, email, phone, password } = args;
+    const user: IUser = await new UserModel({
+        name,
+        email,
+        phone,
+        password
+    })
+    await user.save();
+    return user;
 }
 
 // Queries
 
 export const getUser = async (parent, args) => {
     const { id } = args;
-    try {
-        const user: IUser = await UserModel.findById(id);
-        if (user === null) {
-            return user
-        } else {
-            return user
-        }
 
-    } catch (err) {
-        return err.message
+    const user: IUser = await UserModel.findById(id);
+    if (user === null) {
+        return user
+    } else {
+        return user
     }
+
 }
 
 export const allUsers = async (parent, args) => {
-    try {
 
-        const users: IUser[] = await UserModel.find();
-        return users
-    } catch (err) {
-        return err.message
-    }
+
+    const users: IUser[] = await UserModel.find();
+    return users
+
 }
