@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 
+
 export interface TestResponseType {
     id: string;
     name: string;
@@ -12,6 +13,12 @@ export interface IUser extends mongoose.Document {
     profilePhoto: string
 }
 
+export interface ILog extends mongoose.Document {
+    title: string,
+    date: string,
+    userId: string,
+    image: string
+}
 export interface UserResponseType {
     ok: boolean,
     error: string,
