@@ -1,5 +1,6 @@
 import mongoose from '../mongoose/mongoose';
 import { IUser } from '../types/types';
+import { GraphQLBoolean } from 'graphql';
 
 const UserSchema: mongoose.Schema = new mongoose.Schema({
     name: {
@@ -22,6 +23,10 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
         type: String,
         required: true,
 
+    },
+    verified: {
+        type: GraphQLBoolean,
+        default: false
     }
 })
 

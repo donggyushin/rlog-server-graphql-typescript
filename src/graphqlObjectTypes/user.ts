@@ -14,6 +14,9 @@ const UserType: GraphQLObjectType = new GraphQLObjectType({
         logs: {
             type: new GraphQLList(LogType),
             resolve: getLogs
+        },
+        verified: {
+            type: GraphQLBoolean
         }
     })
 })
