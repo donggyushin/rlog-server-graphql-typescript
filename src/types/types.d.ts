@@ -20,14 +20,26 @@ export interface ILog extends mongoose.Document {
     userId: string,
     image: string
 }
-export interface UserResponseType {
-    ok: boolean,
-    error: string,
-    user: IUser
+
+export interface logResponse {
+    title: string,
+    date: string,
+    userId: string,
+    image: string
 }
 
-export interface UsersResponseType {
-    ok: boolean,
-    error: string,
-    users: IUser[]
+
+export interface LoginResponse {
+    jwt: string,
+
+}
+
+export interface UserResponse {
+
+    name: string,
+    email: string,
+    phone: string,
+    profilePhoto: string,
+    password: string,
+
 }

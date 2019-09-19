@@ -1,10 +1,10 @@
 import UserModel from '../models/user'
-import { IUser } from '../types/types';
+import { IUser, UserResponse, ILog, logResponse } from '../types/types';
 import LogModel from '../models/log';
 
 // Mutations
 
-export const updateUserPassword = async (parent, args) => {
+export const updateUserPassword = async (parent, args): Promise<UserResponse> => {
     const { id, password, newPassword } = args;
     const user = await UserModel.findById(id);
     if (user.password === password) {
@@ -14,7 +14,7 @@ export const updateUserPassword = async (parent, args) => {
     }
 }
 
-export const updateUserProfileImage = async (parent, args) => {
+export const updateUserProfileImage = async (parent, args): Promise<UserResponse> => {
     const { id, profileImage } = args;
     const user = await UserModel.findById(id)
     user.profilePhoto = profileImage
@@ -22,14 +22,14 @@ export const updateUserProfileImage = async (parent, args) => {
     return user
 }
 
-export const deleteUser = async (parent, args) => {
+export const deleteUser = async (parent, args): Promise<UserResponse> => {
     const { id } = args;
     const userToDelete: IUser = await UserModel.findById(id);
     await userToDelete.remove()
     return userToDelete
 }
 
-export const addNewUser = async (parent, args) => {
+export const addNewUser = async (parent, args): Promise<UserResponse> => {
     const { name, email, phone, password } = args;
     const user: IUser = await new UserModel({
         name,
@@ -43,13 +43,13 @@ export const addNewUser = async (parent, args) => {
 
 // Queries
 
-export const getLogs = async (parent, args) => {
+export const getLogs = async (parent, args): Promise<logResponse[]> => {
     const { id } = parent;
     const logs = await LogModel.find({ userId: id })
     return logs
 }
 
-export const getUser = async (parent, args) => {
+export const getUser = async (parent, args): Promise<UserResponse> => {
     const { id } = args;
 
     const user: IUser = await UserModel.findById(id);
@@ -61,7 +61,7 @@ export const getUser = async (parent, args) => {
 
 }
 
-export const allUsers = async (parent, args) => {
+export const allUsers = async (parent, args): Promise<UserResponse[]> => {
 
 
     const users: IUser[] = await UserModel.find();

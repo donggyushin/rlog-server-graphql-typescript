@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList } from 'graphql'
+import { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql'
 import LogType from './log'
 import { getLogs } from '../resolves/userResolvers'
 

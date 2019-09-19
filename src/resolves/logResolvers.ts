@@ -1,15 +1,16 @@
 import LogModel from '../models/log'
 import UserModel from '../models/user';
+import { logResponse, UserResponse } from '../types/types';
 
 // Mutations
-export const deleteALog = async (parent, args) => {
+export const deleteALog = async (parent, args): Promise<logResponse> => {
     const { id } = args;
     const logToDelete = await LogModel.findById(id);
     await logToDelete.remove()
     return logToDelete
 }
 
-export const changeLogImage = async (parent, args) => {
+export const changeLogImage = async (parent, args): Promise<logResponse> => {
     const { id, newImage } = args;
     const log = await LogModel.findById(id);
     log.image = newImage;
@@ -17,7 +18,7 @@ export const changeLogImage = async (parent, args) => {
     return log
 }
 
-export const changeLogTitle = async (parent, args) => {
+export const changeLogTitle = async (parent, args): Promise<logResponse> => {
     const { id, newTitle } = args
     const log = await LogModel.findById(id);
     log.title = newTitle
@@ -25,7 +26,7 @@ export const changeLogTitle = async (parent, args) => {
     return log
 }
 
-export const newLog = async (parent, args) => {
+export const newLog = async (parent, args): Promise<logResponse> => {
     const {
         title,
         userId,
@@ -41,19 +42,19 @@ export const newLog = async (parent, args) => {
 }
 
 // Queries
-export const getAUser = async (parent, args) => {
+export const getAUser = async (parent, args): Promise<UserResponse> => {
     const { userId } = parent;
     const user = await UserModel.findById(userId);
     return user
 }
 
-export const getALog = async (parent, args) => {
+export const getALog = async (parent, args): Promise<logResponse> => {
     const { id } = args
     const log = await LogModel.findById(id)
     return log
 }
 
-export const getAllLogs = async (parent, args) => {
+export const getAllLogs = async (parent, args): Promise<logResponse[]> => {
     const logs = await LogModel.find()
     return logs
 }

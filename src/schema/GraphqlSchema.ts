@@ -5,6 +5,8 @@ import { testResolver, addNewTest } from '../resolves/testResolves'
 import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword } from '../resolves/userResolvers'
 import LogType from '../graphqlObjectTypes/log'
 import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog } from '../resolves/logResolvers'
+import LoginType from '../graphqlObjectTypes/login'
+import { loginResolve } from '../resolves/loginResolvers'
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -44,6 +46,14 @@ const RootQuery: GraphQLObjectType = new GraphQLObjectType({
 const RootMutation: GraphQLObjectType = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
+        login: {
+            type: LoginType,
+            args: {
+                email: { type: new GraphQLNonNull(GraphQLString) },
+                password: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: loginResolve
+        },
         addNewTest: {
             type: TestType,
             args: {
