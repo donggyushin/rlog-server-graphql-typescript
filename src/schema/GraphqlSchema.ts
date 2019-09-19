@@ -7,6 +7,8 @@ import LogType from '../graphqlObjectTypes/log'
 import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog } from '../resolves/logResolvers'
 import LoginType from '../graphqlObjectTypes/login'
 import { loginResolve } from '../resolves/loginResolvers'
+import BlockType from '../graphqlObjectTypes/block'
+import { addNewBlock } from '../resolves/blockResolvers'
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -127,6 +129,16 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 id: { type: new GraphQLNonNull(GraphQLID) }
             },
             resolve: deleteALog
+        },
+        addBlock: {
+            type: BlockType,
+            args: {
+                logId: { type: new GraphQLNonNull(GraphQLString) },
+                type: { type: GraphQLString },
+                text: { type: GraphQLString },
+                imageUrl: { type: GraphQLString },
+            },
+            resolve: addNewBlock
         }
     }
 })

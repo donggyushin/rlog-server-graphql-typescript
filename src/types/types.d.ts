@@ -21,6 +21,20 @@ export interface ILog extends mongoose.Document {
     image: string
 }
 
+export interface IBlock extends mongoose.Document {
+    type: string,
+    text: string,
+    imageUrl: string,
+    logId: string
+}
+
+export interface blockResponse {
+    type: string,
+    text: string,
+    imageUrl: string,
+    logId: string
+}
+
 export interface logResponse {
     title: string,
     date: string,
