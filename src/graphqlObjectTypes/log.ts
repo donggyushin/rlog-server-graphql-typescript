@@ -1,6 +1,8 @@
-import { GraphQLObjectType, GraphQLID, GraphQLString } from "graphql";
+import { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList } from "graphql";
 import UserType from "./user";
-import { getAUser } from '../resolves/logResolvers'
+import { getAUser, getBlocksOfLog, getLogData } from '../resolves/logResolvers'
+import BlockType from "./block";
+import LogDataType from "./logData";
 
 const LogType: GraphQLObjectType = new GraphQLObjectType({
     name: 'Log',
@@ -16,6 +18,10 @@ const LogType: GraphQLObjectType = new GraphQLObjectType({
         user: {
             type: UserType,
             resolve: getAUser
+        },
+        logData: {
+            type: LogDataType,
+            resolve: getLogData
         }
     })
 })

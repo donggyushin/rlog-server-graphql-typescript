@@ -2,13 +2,13 @@ import { GraphQLObjectType, GraphQLID, GraphQLSchema, GraphQLNonNull, GraphQLStr
 import TestType from '../graphqlObjectTypes/test'
 import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
-import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword } from '../resolves/userResolvers'
+import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword, allocateVerifyKeyToUser, verifyUser } from '../resolves/userResolvers'
 import LogType from '../graphqlObjectTypes/log'
 import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog } from '../resolves/logResolvers'
 import LoginType from '../graphqlObjectTypes/login'
 import { loginResolve } from '../resolves/loginResolvers'
 import BlockType from '../graphqlObjectTypes/block'
-import { addNewBlock } from '../resolves/blockResolvers'
+import { addNewBlock, getAllBlocks } from '../resolves/blockResolvers'
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -41,6 +41,10 @@ const RootQuery: GraphQLObjectType = new GraphQLObjectType({
                 id: { type: new GraphQLNonNull(GraphQLID) }
             },
             resolve: getALog
+        },
+        blocks: {
+            type: new GraphQLList(BlockType),
+            resolve: getAllBlocks
         }
     }
 })
@@ -73,6 +77,21 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 password: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: addNewUser
+        },
+        allocateVerifyKeyToUser: {
+            type: UserType,
+            args: {
+                userId: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: allocateVerifyKeyToUser
+        },
+        verifyUser: {
+            type: UserType,
+            args: {
+                userId: { type: new GraphQLNonNull(GraphQLString) },
+                verifyKey: { type: GraphQLString }
+            },
+            resolve: verifyUser
         },
         deleteUser: {
             type: UserType,

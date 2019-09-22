@@ -25,8 +25,11 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
 
     },
     verified: {
-        type: GraphQLBoolean,
+        type: Boolean,
         default: false
+    },
+    verifyKey: {
+        type: String
     }
 })
 

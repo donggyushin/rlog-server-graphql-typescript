@@ -17,6 +17,9 @@ const UserType: GraphQLObjectType = new GraphQLObjectType({
         },
         verified: {
             type: GraphQLBoolean
+        },
+        verifyKey: {
+            type: GraphQLString
         }
     })
 })

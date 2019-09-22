@@ -12,6 +12,11 @@ export const loginResolve = async (parent, args): Promise<LoginResponse> => {
 
         }
     }
+    if (user.verified === false) {
+        return {
+            jwt: 'Not verified'
+        }
+    }
     if (user.password === password) {
         // Have to make jwt token
         const jwt = generateToken(user.id);

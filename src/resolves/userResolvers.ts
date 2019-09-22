@@ -1,8 +1,29 @@
 import UserModel from '../models/user'
 import { IUser, UserResponse, ILog, logResponse } from '../types/types';
 import LogModel from '../models/log';
+import { generateVerifyKeyString } from '../utils/generateVerifyKey'
 
 // Mutations
+
+export const verifyUser = async (parent, args): Promise<UserResponse> => {
+    const { userId, verifyKey } = args;
+    const user = await UserModel.findById(userId);
+    const verified = user.verifyKey === verifyKey ? true : false
+    user.verified = verified
+    await user.save()
+    return user
+}
+
+export const allocateVerifyKeyToUser = async (parent, args): Promise<UserResponse> => {
+    const { userId } = args;
+    const user = await UserModel.findById(userId);
+    // TODO: Generate verify key
+    const verifyKey = generateVerifyKeyString();
+    user.verifyKey = verifyKey;
+    await user.save();
+    // TODO: Send verify key to user's mobile by SMS
+    return user
+}
 
 export const updateUserPassword = async (parent, args): Promise<UserResponse> => {
     const { id, password, newPassword } = args;

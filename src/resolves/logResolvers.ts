@@ -1,6 +1,8 @@
 import LogModel from '../models/log'
 import UserModel from '../models/user';
-import { logResponse, UserResponse } from '../types/types';
+import { logResponse, UserResponse, blockResponse, LogDataResponse } from '../types/types';
+import BlockModel from '../models/block';
+import LogDataModel from '../models/logData'
 
 // Mutations
 export const deleteALog = async (parent, args): Promise<logResponse> => {
@@ -38,10 +40,28 @@ export const newLog = async (parent, args): Promise<logResponse> => {
         image
     })
     await log.save()
+    const logData = await new LogDataModel({
+        logId: log.id
+    })
+    await logData.save()
     return log
 }
 
 // Queries
+export const getLogData = async (parent, args): Promise<LogDataResponse> => {
+    const { id } = parent;
+    const logData = await LogDataModel.findOne({
+        logId: id
+    })
+    return logData
+}
+
+export const getBlocksOfLog = async (parent, args): Promise<blockResponse[]> => {
+    const { id } = parent;
+    const blocks = await BlockModel.find({ logId: id })
+    return blocks
+}
+
 export const getAUser = async (parent, args): Promise<UserResponse> => {
     const { userId } = parent;
     const user = await UserModel.findById(userId);

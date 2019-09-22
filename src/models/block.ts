@@ -6,15 +6,15 @@ const BlockSchema: mongoose.Schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    text: {
-        type: String
-    },
-    imageUrl: {
-        type: String
-    },
     logId: {
         type: String,
-        required: true
+        required: true,
+        ref: 'Log'
+    },
+    logDataId: {
+        type: String,
+        required: true,
+        ref: 'LogData'
     }
 })
 
