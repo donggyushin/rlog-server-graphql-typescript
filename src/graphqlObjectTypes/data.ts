@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLID, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLBoolean } from 'graphql';
 import FileType from './file'
 import { getAFile } from '../resolves/dataResolvers'
 const DataType: GraphQLObjectType = new GraphQLObjectType({
@@ -10,6 +10,12 @@ const DataType: GraphQLObjectType = new GraphQLObjectType({
         file: {
             type: FileType,
             resolve: getAFile
+        },
+        stretched: {
+            type: GraphQLBoolean
+        },
+        caption: {
+            type: GraphQLString
         }
     })
 })

@@ -32,7 +32,8 @@ export const newLog = async (parent, args): Promise<logResponse> => {
     const {
         title,
         userId,
-        image
+        image,
+        time
     } = args;
     const log = await new LogModel({
         title,
@@ -40,9 +41,18 @@ export const newLog = async (parent, args): Promise<logResponse> => {
         image
     })
     await log.save()
-    const logData = await new LogDataModel({
-        logId: log.id
-    })
+    let logData;
+    if (time === null) {
+        logData = await new LogDataModel({
+            logId: log.id
+        })
+    } else {
+        logData = await new LogDataModel({
+            logId: log.id,
+            time
+        })
+    }
+
     await logData.save()
     return log
 }

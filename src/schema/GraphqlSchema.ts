@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLID, GraphQLSchema, GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql'
+import { GraphQLObjectType, GraphQLID, GraphQLSchema, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql'
 import TestType from '../graphqlObjectTypes/test'
 import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
@@ -9,6 +9,8 @@ import LoginType from '../graphqlObjectTypes/login'
 import { loginResolve } from '../resolves/loginResolvers'
 import BlockType from '../graphqlObjectTypes/block'
 import { addNewBlock, getAllBlocks } from '../resolves/blockResolvers'
+
+
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -122,7 +124,10 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
             args: {
                 title: { type: new GraphQLNonNull(GraphQLString) },
                 userId: { type: new GraphQLNonNull(GraphQLString) },
-                image: { type: GraphQLString }
+                image: { type: GraphQLString },
+                time: {
+                    type: GraphQLString
+                }
             },
             resolve: newLog
         },
@@ -156,6 +161,7 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 type: { type: GraphQLString },
                 text: { type: GraphQLString },
                 imageUrl: { type: GraphQLString },
+                stretched: { type: GraphQLBoolean }
             },
             resolve: addNewBlock
         }

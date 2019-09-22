@@ -28,6 +28,10 @@ const LogSchema: mongoose.Schema = new mongoose.Schema({
     day: {
         type: String,
         default: new Date().getDate()
+    },
+    private: {
+        type: Boolean,
+        default: true
     }
 })
 

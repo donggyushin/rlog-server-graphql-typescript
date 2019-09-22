@@ -1,5 +1,11 @@
 import mongoose from 'mongoose'
 
+export enum BlockTypeEnum {
+    HEADER,
+    PARAGRAPH,
+    IMAGE
+}
+
 
 export interface TestResponseType {
     id: string;
@@ -20,7 +26,8 @@ export interface ILog extends mongoose.Document {
     title: string,
     date: string,
     userId: string,
-    image: string
+    image: string,
+    private: boolean
 }
 
 export interface ILogData extends mongoose.Document {
@@ -41,13 +48,17 @@ export interface IBlock extends mongoose.Document {
 
 export interface IData extends mongoose.Document {
     blockId: string,
-    text: string
+    text: string,
+    stretched: boolean,
+    caption: string
 }
 
 
 export interface DataResponse {
     blockId: string,
-    text: string
+    text: string,
+    stretched: boolean,
+    caption: string
 }
 
 export interface IFile extends mongoose.Document {
@@ -70,7 +81,8 @@ export interface logResponse {
     title: string,
     date: string,
     userId: string,
-    image: string
+    image: string,
+    private: boolean
 }
 
 

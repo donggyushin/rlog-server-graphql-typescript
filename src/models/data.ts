@@ -9,6 +9,13 @@ const DataSchema: mongoose.Schema = new mongoose.Schema({
     },
     text: {
         type: String
+    },
+    stretched: {
+        type: Boolean,
+        default: false
+    },
+    caption: {
+        type: String
     }
 })
 
