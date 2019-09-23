@@ -5,8 +5,10 @@ import cors from 'cors';
 import schema from './schema'
 import './mongoose/mongoose'
 import './models'
+import dotenv from 'dotenv'
+dotenv.config()
 const app: express.Application = express();
-const PORT: number = 4000;
+const PORT: string = process.env.PORT;
 
 
 // Allow cross-origin requests
