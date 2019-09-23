@@ -41,7 +41,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var user_1 = __importDefault(require("../models/user"));
 var log_1 = __importDefault(require("../models/log"));
+var generateVerifyKey_1 = require("../utils/generateVerifyKey");
 // Mutations
+exports.verifyUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, verifyKey, user, verified;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userId = args.userId, verifyKey = args.verifyKey;
+                return [4 /*yield*/, user_1.default.findById(userId)];
+            case 1:
+                user = _a.sent();
+                verified = user.verifyKey === verifyKey ? true : false;
+                user.verified = verified;
+                return [4 /*yield*/, user.save()];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, user];
+        }
+    });
+}); };
+exports.allocateVerifyKeyToUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, user, verifyKey;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userId = args.userId;
+                return [4 /*yield*/, user_1.default.findById(userId)];
+            case 1:
+                user = _a.sent();
+                verifyKey = generateVerifyKey_1.generateVerifyKeyString();
+                user.verifyKey = verifyKey;
+                return [4 /*yield*/, user.save()];
+            case 2:
+                _a.sent();
+                // TODO: Send verify key to user's mobile by SMS
+                return [2 /*return*/, user];
+        }
+    });
+}); };
 exports.updateUserPassword = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var id, password, newPassword, user;
     return __generator(this, function (_a) {

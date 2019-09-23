@@ -31,6 +31,10 @@ var LogSchema = new mongoose_1.default.Schema({
     day: {
         type: String,
         default: new Date().getDate()
+    },
+    private: {
+        type: Boolean,
+        default: true
     }
 });
 var LogModel = mongoose_1.default.model('Log', LogSchema);

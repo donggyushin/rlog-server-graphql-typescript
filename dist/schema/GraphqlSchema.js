@@ -10,6 +10,10 @@ var testResolves_1 = require("../resolves/testResolves");
 var userResolvers_1 = require("../resolves/userResolvers");
 var log_1 = __importDefault(require("../graphqlObjectTypes/log"));
 var logResolvers_1 = require("../resolves/logResolvers");
+var login_1 = __importDefault(require("../graphqlObjectTypes/login"));
+var loginResolvers_1 = require("../resolves/loginResolvers");
+var block_1 = __importDefault(require("../graphqlObjectTypes/block"));
+var blockResolvers_1 = require("../resolves/blockResolvers");
 var RootQuery = new graphql_1.GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -41,12 +45,24 @@ var RootQuery = new graphql_1.GraphQLObjectType({
                 id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
             },
             resolve: logResolvers_1.getALog
+        },
+        blocks: {
+            type: new graphql_1.GraphQLList(block_1.default),
+            resolve: blockResolvers_1.getAllBlocks
         }
     }
 });
 var RootMutation = new graphql_1.GraphQLObjectType({
     name: 'Mutation',
     fields: {
+        login: {
+            type: login_1.default,
+            args: {
+                email: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                password: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: loginResolvers_1.loginResolve
+        },
         addNewTest: {
             type: test_1.default,
             args: {
@@ -64,6 +80,21 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 password: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
             },
             resolve: userResolvers_1.addNewUser
+        },
+        allocateVerifyKeyToUser: {
+            type: user_1.default,
+            args: {
+                userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: userResolvers_1.allocateVerifyKeyToUser
+        },
+        verifyUser: {
+            type: user_1.default,
+            args: {
+                userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                verifyKey: { type: graphql_1.GraphQLString }
+            },
+            resolve: userResolvers_1.verifyUser
         },
         deleteUser: {
             type: user_1.default,
@@ -94,7 +125,10 @@ var RootMutation = new graphql_1.GraphQLObjectType({
             args: {
                 title: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
                 userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
-                image: { type: graphql_1.GraphQLString }
+                image: { type: graphql_1.GraphQLString },
+                time: {
+                    type: graphql_1.GraphQLString
+                }
             },
             resolve: logResolvers_1.newLog
         },
@@ -120,6 +154,17 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
             },
             resolve: logResolvers_1.deleteALog
+        },
+        addBlock: {
+            type: block_1.default,
+            args: {
+                logId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                type: { type: graphql_1.GraphQLString },
+                text: { type: graphql_1.GraphQLString },
+                imageUrl: { type: graphql_1.GraphQLString },
+                stretched: { type: graphql_1.GraphQLBoolean }
+            },
+            resolve: blockResolvers_1.addNewBlock
         }
     }
 });

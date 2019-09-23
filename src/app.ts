@@ -26,4 +26,5 @@ app.use('/playground', expressPlayground({
     endpoint: '/graphql'
 }))
 
+
 app.listen(PORT, () => console.log(`Graphql server listening on port ${PORT}`))

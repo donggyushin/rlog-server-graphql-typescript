@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var graphql_1 = require("graphql");
 var user_1 = __importDefault(require("./user"));
 var logResolvers_1 = require("../resolves/logResolvers");
+var logData_1 = __importDefault(require("./logData"));
 var LogType = new graphql_1.GraphQLObjectType({
     name: 'Log',
     fields: function () { return ({
@@ -20,6 +21,13 @@ var LogType = new graphql_1.GraphQLObjectType({
         user: {
             type: user_1.default,
             resolve: logResolvers_1.getAUser
+        },
+        logData: {
+            type: logData_1.default,
+            resolve: logResolvers_1.getLogData
+        },
+        private: {
+            type: graphql_1.GraphQLBoolean
         }
     }); }
 });

@@ -2,6 +2,7 @@ import UserModel from '../models/user'
 import { IUser, UserResponse, ILog, logResponse } from '../types/types';
 import LogModel from '../models/log';
 import { generateVerifyKeyString } from '../utils/generateVerifyKey'
+import { sendSMSMEssage } from '../utils/sendMessage';
 
 // Mutations
 
@@ -17,11 +18,11 @@ export const verifyUser = async (parent, args): Promise<UserResponse> => {
 export const allocateVerifyKeyToUser = async (parent, args): Promise<UserResponse> => {
     const { userId } = args;
     const user = await UserModel.findById(userId);
-    // TODO: Generate verify key
     const verifyKey = generateVerifyKeyString();
     user.verifyKey = verifyKey;
     await user.save();
     // TODO: Send verify key to user's mobile by SMS
+    sendSMSMEssage("82" + user.phone.substr(1), `Your verification key is ${verifyKey}`)
     return user
 }
 

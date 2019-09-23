@@ -4,33 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importDefault(require("../mongoose/mongoose"));
-var UserSchema = new mongoose_1.default.Schema({
-    name: {
+var BlockSchema = new mongoose_1.default.Schema({
+    type: {
         type: String,
         required: true,
     },
-    email: {
+    logId: {
         type: String,
         required: true,
-        unique: true
+        ref: 'Log'
     },
-    phone: {
+    logDataId: {
         type: String,
         required: true,
-        unique: true
-    },
-    profilePhoto: String,
-    password: {
-        type: String,
-        required: true,
-    },
-    verified: {
-        type: Boolean,
-        default: false
-    },
-    verifyKey: {
-        type: String
+        ref: 'LogData'
     }
 });
-var UserModel = mongoose_1.default.model('User', UserSchema);
-exports.default = UserModel;
+var BlockModel = mongoose_1.default.model('Block', BlockSchema);
+exports.default = BlockModel;

@@ -18,6 +18,12 @@ var UserType = new graphql_1.GraphQLObjectType({
         logs: {
             type: new graphql_1.GraphQLList(log_1.default),
             resolve: userResolvers_1.getLogs
+        },
+        verified: {
+            type: graphql_1.GraphQLBoolean
+        },
+        verifyKey: {
+            type: graphql_1.GraphQLString
         }
     }); }
 });
