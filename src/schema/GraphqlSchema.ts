@@ -91,7 +91,7 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
             type: UserType,
             args: {
                 userId: { type: new GraphQLNonNull(GraphQLString) },
-                verifyKey: { type: GraphQLString }
+                verifyKey: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: verifyUser
         },
