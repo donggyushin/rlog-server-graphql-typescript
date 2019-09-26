@@ -16,7 +16,34 @@ const DataSchema: mongoose.Schema = new mongoose.Schema({
     },
     caption: {
         type: String
+    },
+    embed: {
+        type: String
+    },
+    service: {
+        type: String
+    },
+    source: {
+        type: String
+    },
+    height: {
+        type: Number
+    },
+    width: {
+        type: Number
+    },
+    level: {
+        type: Number
+    },
+    withBorder: {
+        type: Boolean,
+        default: true
+    },
+    withBackground: {
+        type: Boolean,
+        default: false
     }
+
 })
 
 const DataModel: mongoose.Model<IData> = mongoose.model<IData>('Data', DataSchema);

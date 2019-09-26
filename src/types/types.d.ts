@@ -50,7 +50,15 @@ export interface IData extends mongoose.Document {
     blockId: string,
     text: string,
     stretched: boolean,
-    caption: string
+    caption: string,
+    embed: string,
+    service: string,
+    source: string,
+    height: number,
+    width: number,
+    level: number,
+    withBorder: boolean,
+    withBackground: boolean
 }
 
 
@@ -58,7 +66,15 @@ export interface DataResponse {
     blockId: string,
     text: string,
     stretched: boolean,
-    caption: string
+    caption: string,
+    embed: string,
+    service: string,
+    source: string,
+    height: number,
+    width: number,
+    level: number,
+    withBorder: boolean,
+    withBackground: boolean
 }
 
 export interface IFile extends mongoose.Document {

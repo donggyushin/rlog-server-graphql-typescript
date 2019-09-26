@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLID, GraphQLSchema, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql'
+import { GraphQLObjectType, GraphQLID, GraphQLSchema, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLBoolean, GraphQLInt } from 'graphql'
 import TestType from '../graphqlObjectTypes/test'
 import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
@@ -161,7 +161,14 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 type: { type: GraphQLString },
                 text: { type: GraphQLString },
                 imageUrl: { type: GraphQLString },
-                stretched: { type: GraphQLBoolean }
+                stretched: { type: GraphQLBoolean },
+                caption: { type: GraphQLString },
+                embed: { type: GraphQLString },
+                height: { type: GraphQLInt },
+                service: { type: GraphQLString },
+                source: { type: GraphQLString },
+                width: { type: GraphQLInt },
+                level: { type: GraphQLInt }
             },
             resolve: addNewBlock
         }
