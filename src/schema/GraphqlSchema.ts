@@ -4,11 +4,12 @@ import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
 import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword, allocateVerifyKeyToUser, verifyUser } from '../resolves/userResolvers'
 import LogType from '../graphqlObjectTypes/log'
-import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog } from '../resolves/logResolvers'
+import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog, deleteAllLogs } from '../resolves/logResolvers'
 import LoginType from '../graphqlObjectTypes/login'
 import { loginResolve } from '../resolves/loginResolvers'
 import BlockType from '../graphqlObjectTypes/block'
 import { addNewBlock, getAllBlocks } from '../resolves/blockResolvers'
+import OkayResponseType from '../graphqlObjectTypes/okayResponse'
 
 
 
@@ -130,6 +131,10 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 }
             },
             resolve: newLog
+        },
+        deleteAllLogs: {
+            type: OkayResponseType,
+            resolve: deleteAllLogs
         },
         changeLogTitle: {
             type: LogType,

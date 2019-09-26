@@ -1,10 +1,27 @@
 import LogModel from '../models/log'
 import UserModel from '../models/user';
-import { logResponse, UserResponse, blockResponse, LogDataResponse } from '../types/types';
+import { logResponse, UserResponse, blockResponse, LogDataResponse, OkayResponse } from '../types/types';
 import BlockModel from '../models/block';
 import LogDataModel from '../models/logData'
+import DataModel from '../models/data';
+import FileModel from '../models/file';
 
 // Mutations
+export const deleteAllLogs = async (parent, args): Promise<OkayResponse> => {
+    await LogModel.deleteMany({})
+    await LogDataModel.deleteMany({})
+    await BlockModel.deleteMany({})
+    await DataModel.deleteMany({});
+    await FileModel.deleteMany({})
+
+    return {
+        ok: true,
+        error: false,
+        message: null
+    }
+}
+
+
 export const deleteALog = async (parent, args): Promise<logResponse> => {
     const { id } = args;
     const logToDelete = await LogModel.findById(id);

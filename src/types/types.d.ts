@@ -117,3 +117,9 @@ export interface UserResponse {
     verifyKey: string,
     verified: boolean
 }
+
+export interface OkayResponse {
+    ok: boolean,
+    error: boolean,
+    message: string
+}
