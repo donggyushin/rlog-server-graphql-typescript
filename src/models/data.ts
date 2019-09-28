@@ -42,6 +42,9 @@ const DataSchema: mongoose.Schema = new mongoose.Schema({
     withBackground: {
         type: Boolean,
         default: false
+    },
+    link: {
+        type: String
     }
 
 })

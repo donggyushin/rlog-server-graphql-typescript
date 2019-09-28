@@ -2,8 +2,9 @@ import { blockResponse, DataResponse } from "../types/types";
 import BlockModel from "../models/block";
 import DataModel from '../models/data'
 import FileModel from '../models/file'
-import LogModel from "../models/log";
 import LogDataModel from "../models/logData";
+import MetaModel from "../models/meta";
+import ImageModel from "../models/image";
 
 // Queries
 
@@ -24,7 +25,7 @@ export const getData = async (parent, args): Promise<DataResponse> => {
 // Mutations
 
 export const addNewBlock = async (parent, args): Promise<blockResponse> => {
-    const { logId, type, text, imageUrl, stretched, caption, embed, height, service, source, width, level, withBackground, withBorder } = args;
+    const { image, link, logId, type, text, imageUrl, stretched, caption, embed, height, service, source, width, level, withBackground, withBorder, title, description } = args;
     const logData = await LogDataModel.findOne({
         logId
     });
@@ -46,6 +47,27 @@ export const addNewBlock = async (parent, args): Promise<blockResponse> => {
             data.level = level
         }
         await data.save()
+        return block;
+    } else if (type === "linkTool") {
+        const blockId = block.id;
+        const data = await new DataModel({
+            blockId,
+            link
+        })
+        await data.save();
+        const dataId = data.id;
+        const meta = await new MetaModel({
+            dataId,
+            title,
+            description
+        })
+        await meta.save()
+        const metaId = meta.id;
+        const newImage = await new ImageModel({
+            metaId,
+            url: image
+        })
+        newImage.save()
         return block;
     } else if (type === 'image') {
         const blockId = block.id;

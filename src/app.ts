@@ -6,6 +6,7 @@ import schema from './schema'
 import './mongoose/mongoose'
 import './models'
 import dotenv from 'dotenv'
+import RestApi from './restApi'
 dotenv.config()
 const app: express.Application = express();
 const PORT: string = process.env.PORT;
@@ -14,7 +15,7 @@ const PORT: string = process.env.PORT;
 // Allow cross-origin requests
 app.use(cors())
 
-
+app.use('/api', RestApi)
 
 app.use('/graphql', graphqlHttp({
     schema,

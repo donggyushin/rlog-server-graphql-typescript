@@ -183,7 +183,11 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 width: { type: GraphQLInt },
                 level: { type: GraphQLInt },
                 withBackground: { type: GraphQLBoolean },
-                withBorder: { type: GraphQLBoolean }
+                withBorder: { type: GraphQLBoolean },
+                link: { type: GraphQLString },
+                title: { type: GraphQLString },
+                description: { type: GraphQLString },
+                image: { type: GraphQLString }
             },
             resolve: addNewBlock
         }

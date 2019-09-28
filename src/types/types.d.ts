@@ -46,6 +46,28 @@ export interface IBlock extends mongoose.Document {
     logDataId: string
 }
 
+export interface IImage extends mongoose.Document {
+    metaId: string,
+    url: string
+}
+
+export interface ImageResponse {
+    metaId: string,
+    url: string
+}
+
+export interface IMeta extends mongoose.Document {
+    dataId: string,
+    description: string,
+    title: string
+}
+
+export interface MetaResponse {
+    dataId: string,
+    description: string,
+    title: string
+}
+
 export interface IData extends mongoose.Document {
     blockId: string,
     text: string,
@@ -58,8 +80,10 @@ export interface IData extends mongoose.Document {
     width: number,
     level: number,
     withBorder: boolean,
-    withBackground: boolean
+    withBackground: boolean,
+    link: string
 }
+
 
 
 export interface DataResponse {
@@ -74,7 +98,8 @@ export interface DataResponse {
     width: number,
     level: number,
     withBorder: boolean,
-    withBackground: boolean
+    withBackground: boolean,
+    link: string
 }
 
 export interface IFile extends mongoose.Document {

@@ -1,6 +1,7 @@
 import { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLBoolean, GraphQLInt } from 'graphql';
 import FileType from './file'
-import { getAFile } from '../resolves/dataResolvers'
+import MetaType from './meta'
+import { getAFile, getAMeta } from '../resolves/dataResolvers'
 const DataType: GraphQLObjectType = new GraphQLObjectType({
     name: 'Data',
     fields: () => ({
@@ -10,6 +11,10 @@ const DataType: GraphQLObjectType = new GraphQLObjectType({
         file: {
             type: FileType,
             resolve: getAFile
+        },
+        meta: {
+            type: MetaType,
+            resolve: getAMeta
         },
         stretched: {
             type: GraphQLBoolean
@@ -40,6 +45,9 @@ const DataType: GraphQLObjectType = new GraphQLObjectType({
         },
         withBackground: {
             type: GraphQLBoolean
+        },
+        link: {
+            type: GraphQLString
         }
     })
 })
