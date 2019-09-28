@@ -25,6 +25,12 @@ const LogType: GraphQLObjectType = new GraphQLObjectType({
         },
         private: {
             type: GraphQLBoolean
+        },
+        previousLogId: {
+            type: GraphQLString
+        },
+        nextLogId: {
+            type: GraphQLString
         }
     })
 })

@@ -50,13 +50,27 @@ export const newLog = async (parent, args): Promise<logResponse> => {
         title,
         userId,
         image,
-        time
+        time,
+        privateAsArgs
     } = args;
+
+    const theLatestLogArray = await LogModel.find({ userId }).limit(1).sort([['date', -1]]);
+    const theLatestLog = theLatestLogArray[0]
     const log = await new LogModel({
         title,
         userId,
-        image
+        image,
+        private: privateAsArgs
     })
+    if (theLatestLog) {
+        theLatestLog.nextLogId = log.id;
+        log.previousLogId = theLatestLog.id;
+        await theLatestLog.save()
+    }
+
+
+
+
     await log.save()
     let logData;
     if (time === null) {
@@ -105,12 +119,19 @@ export const getAUser = async (parent, args): Promise<UserResponse> => {
 }
 
 export const getALog = async (parent, args): Promise<logResponse> => {
-    const { id } = args
+    const { id, userId } = args
     const log = await LogModel.findById(id)
+    if (log.private === true) {
+        if (log.userId === userId) {
+            return log
+        } else {
+            return null
+        }
+    }
     return log
 }
 
 export const getAllLogs = async (parent, args): Promise<logResponse[]> => {
-    const logs = await LogModel.find()
+    const logs = await LogModel.find().sort([['date', -1]])
     return logs
 }

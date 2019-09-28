@@ -41,7 +41,8 @@ const RootQuery: GraphQLObjectType = new GraphQLObjectType({
         log: {
             type: LogType,
             args: {
-                id: { type: new GraphQLNonNull(GraphQLID) }
+                id: { type: new GraphQLNonNull(GraphQLID) },
+                userId: { type: GraphQLString }
             },
             resolve: getALog
         },
@@ -136,7 +137,8 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 image: { type: GraphQLString },
                 time: {
                     type: GraphQLString
-                }
+                },
+                privateAsArgs: { type: GraphQLBoolean }
             },
             resolve: newLog
         },
@@ -187,7 +189,8 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 link: { type: GraphQLString },
                 title: { type: GraphQLString },
                 description: { type: GraphQLString },
-                image: { type: GraphQLString }
+                image: { type: GraphQLString },
+
             },
             resolve: addNewBlock
         }

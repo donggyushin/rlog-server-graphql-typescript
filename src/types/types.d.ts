@@ -27,7 +27,9 @@ export interface ILog extends mongoose.Document {
     date: string,
     userId: string,
     image: string,
-    private: boolean
+    private: boolean,
+    previousLogId: string,
+    nextLogId: string
 }
 
 export interface ILogData extends mongoose.Document {
@@ -123,7 +125,9 @@ export interface logResponse {
     date: string,
     userId: string,
     image: string,
-    private: boolean
+    private: boolean,
+    previousLogId: string,
+    nextLogId: string
 }
 
 

@@ -32,6 +32,12 @@ const LogSchema: mongoose.Schema = new mongoose.Schema({
     private: {
         type: Boolean,
         default: true
+    },
+    previousLogId: {
+        type: String
+    },
+    nextLogId: {
+        type: String
     }
 })
 
