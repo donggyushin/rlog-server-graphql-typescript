@@ -75,6 +75,15 @@ export const newLog = async (parent, args): Promise<logResponse> => {
 }
 
 // Queries
+export const getMyLogs = async (parent, args): Promise<logResponse[]> => {
+    const { userId, page } = args;
+    const skipNumber: number = 50 * (page - 1);
+    const logs = await LogModel.find({
+        userId
+    }).limit(50).skip(skipNumber).sort([['date', -1]])
+    return logs
+}
+
 export const getLogData = async (parent, args): Promise<LogDataResponse> => {
     const { id } = parent;
     const logData = await LogDataModel.findOne({

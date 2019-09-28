@@ -4,7 +4,7 @@ import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
 import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword, allocateVerifyKeyToUser, verifyUser } from '../resolves/userResolvers'
 import LogType from '../graphqlObjectTypes/log'
-import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog, deleteAllLogs } from '../resolves/logResolvers'
+import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog, deleteAllLogs, getMyLogs } from '../resolves/logResolvers'
 import LoginType from '../graphqlObjectTypes/login'
 import { loginResolve } from '../resolves/loginResolvers'
 import BlockType from '../graphqlObjectTypes/block'
@@ -48,6 +48,14 @@ const RootQuery: GraphQLObjectType = new GraphQLObjectType({
         blocks: {
             type: new GraphQLList(BlockType),
             resolve: getAllBlocks
+        },
+        myLogs: {
+            type: new GraphQLList(LogType),
+            args: {
+                userId: { type: new GraphQLNonNull(GraphQLString) },
+                page: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: getMyLogs
         }
     }
 })
@@ -173,7 +181,9 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 service: { type: GraphQLString },
                 source: { type: GraphQLString },
                 width: { type: GraphQLInt },
-                level: { type: GraphQLInt }
+                level: { type: GraphQLInt },
+                withBackground: { type: GraphQLBoolean },
+                withBorder: { type: GraphQLBoolean }
             },
             resolve: addNewBlock
         }
