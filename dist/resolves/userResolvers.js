@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var user_1 = __importDefault(require("../models/user"));
 var log_1 = __importDefault(require("../models/log"));
 var generateVerifyKey_1 = require("../utils/generateVerifyKey");
+var sendMessage_1 = require("../utils/sendMessage");
 // Mutations
 exports.verifyUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, verifyKey, user, verified;
@@ -76,6 +77,7 @@ exports.allocateVerifyKeyToUser = function (parent, args) { return __awaiter(voi
             case 2:
                 _a.sent();
                 // TODO: Send verify key to user's mobile by SMS
+                sendMessage_1.sendSMSMEssage("82" + user.phone.substr(1), "Your verification key is " + verifyKey);
                 return [2 /*return*/, user];
         }
     });

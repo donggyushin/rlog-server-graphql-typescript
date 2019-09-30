@@ -39,37 +39,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var file_1 = __importDefault(require("../models/file"));
-var meta_1 = __importDefault(require("../models/meta"));
-// Queries
-exports.getAMeta = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, meta;
+var express_1 = __importDefault(require("express"));
+var url_metadata_1 = __importDefault(require("url-metadata"));
+var router = express_1.default.Router();
+router.get('/fetchUrl', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var url, metadata, title, image, description;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = parent.id;
-                return [4 /*yield*/, meta_1.default.findOne({
-                        dataId: id
-                    })];
+                url = req.query.url;
+                return [4 /*yield*/, url_metadata_1.default(url)];
             case 1:
-                meta = _a.sent();
-                return [2 /*return*/, meta];
+                metadata = _a.sent();
+                title = metadata.title;
+                image = metadata.image;
+                description = metadata.description;
+                res.json({
+                    success: 1,
+                    meta: {
+                        title: title,
+                        description: description,
+                        image: {
+                            url: image
+                        }
+                    }
+                });
+                return [2 /*return*/];
         }
     });
-}); };
-exports.getAFile = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, file;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                id = parent.id;
-                return [4 /*yield*/, file_1.default.findOne({
-                        dataId: id
-                    })];
-            case 1:
-                file = _a.sent();
-                return [2 /*return*/, file];
-        }
-    });
-}); };
-// Mutations
+}); });
+exports.default = router;

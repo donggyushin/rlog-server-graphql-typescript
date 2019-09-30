@@ -39,37 +39,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var file_1 = __importDefault(require("../models/file"));
-var meta_1 = __importDefault(require("../models/meta"));
+var image_1 = __importDefault(require("../models/image"));
 // Queries
-exports.getAMeta = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, meta;
+exports.getAImage = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, image;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = parent.id;
-                return [4 /*yield*/, meta_1.default.findOne({
-                        dataId: id
+                return [4 /*yield*/, image_1.default.findOne({
+                        metaId: id
                     })];
             case 1:
-                meta = _a.sent();
-                return [2 /*return*/, meta];
+                image = _a.sent();
+                return [2 /*return*/, image];
         }
     });
 }); };
-exports.getAFile = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, file;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                id = parent.id;
-                return [4 /*yield*/, file_1.default.findOne({
-                        dataId: id
-                    })];
-            case 1:
-                file = _a.sent();
-                return [2 /*return*/, file];
-        }
-    });
-}); };
-// Mutations

@@ -35,6 +35,12 @@ var LogSchema = new mongoose_1.default.Schema({
     private: {
         type: Boolean,
         default: true
+    },
+    previousLogId: {
+        type: String
+    },
+    nextLogId: {
+        type: String
     }
 });
 var LogModel = mongoose_1.default.model('Log', LogSchema);

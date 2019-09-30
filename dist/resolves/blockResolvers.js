@@ -43,6 +43,8 @@ var block_1 = __importDefault(require("../models/block"));
 var data_1 = __importDefault(require("../models/data"));
 var file_1 = __importDefault(require("../models/file"));
 var logData_1 = __importDefault(require("../models/logData"));
+var meta_1 = __importDefault(require("../models/meta"));
+var image_1 = __importDefault(require("../models/image"));
 // Queries
 exports.getAllBlocks = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var blocks;
@@ -72,11 +74,11 @@ exports.getData = function (parent, args) { return __awaiter(void 0, void 0, voi
 }); };
 // Mutations
 exports.addNewBlock = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var logId, type, text, imageUrl, stretched, logData, block, blockId, data, blockId, data, dataId, file;
+    var image, link, logId, type, text, imageUrl, stretched, caption, embed, height, service, source, width, level, withBackground, withBorder, title, description, logData, block, blockId, data, blockId, data, dataId, meta, metaId, newImage, blockId, data, dataId, file, blockId, data;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                logId = args.logId, type = args.type, text = args.text, imageUrl = args.imageUrl, stretched = args.stretched;
+                image = args.image, link = args.link, logId = args.logId, type = args.type, text = args.text, imageUrl = args.imageUrl, stretched = args.stretched, caption = args.caption, embed = args.embed, height = args.height, service = args.service, source = args.source, width = args.width, level = args.level, withBackground = args.withBackground, withBorder = args.withBorder, title = args.title, description = args.description;
                 return [4 /*yield*/, logData_1.default.findOne({
                         logId: logId
                     })];
@@ -101,36 +103,92 @@ exports.addNewBlock = function (parent, args) { return __awaiter(void 0, void 0,
                     })];
             case 4:
                 data = _a.sent();
+                if (type === 'header') {
+                    data.level = level;
+                }
                 return [4 /*yield*/, data.save()];
             case 5:
                 _a.sent();
                 return [2 /*return*/, block];
             case 6:
-                if (!(type === 'image')) return [3 /*break*/, 11];
+                if (!(type === "linkTool")) return [3 /*break*/, 12];
+                blockId = block.id;
+                return [4 /*yield*/, new data_1.default({
+                        blockId: blockId,
+                        link: link
+                    })];
+            case 7:
+                data = _a.sent();
+                return [4 /*yield*/, data.save()];
+            case 8:
+                _a.sent();
+                dataId = data.id;
+                return [4 /*yield*/, new meta_1.default({
+                        dataId: dataId,
+                        title: title,
+                        description: description
+                    })];
+            case 9:
+                meta = _a.sent();
+                return [4 /*yield*/, meta.save()];
+            case 10:
+                _a.sent();
+                metaId = meta.id;
+                return [4 /*yield*/, new image_1.default({
+                        metaId: metaId,
+                        url: image
+                    })];
+            case 11:
+                newImage = _a.sent();
+                newImage.save();
+                return [2 /*return*/, block];
+            case 12:
+                if (!(type === 'image')) return [3 /*break*/, 17];
                 blockId = block.id;
                 return [4 /*yield*/, new data_1.default({
                         blockId: blockId
                     })];
-            case 7:
+            case 13:
                 data = _a.sent();
                 if (stretched !== null) {
                     data.stretched = stretched;
                 }
+                data.caption = caption;
+                data.withBorder = withBorder;
+                data.withBackground = withBackground;
                 return [4 /*yield*/, data.save()];
-            case 8:
+            case 14:
                 _a.sent();
                 dataId = data.id;
                 return [4 /*yield*/, new file_1.default({
                         dataId: dataId,
                         url: imageUrl
                     })];
-            case 9:
+            case 15:
                 file = _a.sent();
                 return [4 /*yield*/, file.save()];
-            case 10:
+            case 16:
                 _a.sent();
                 return [2 /*return*/, block];
-            case 11: return [2 /*return*/];
+            case 17:
+                if (!(type === 'embed')) return [3 /*break*/, 20];
+                blockId = block.id;
+                return [4 /*yield*/, new data_1.default({
+                        blockId: blockId,
+                        caption: caption,
+                        embed: embed,
+                        height: height,
+                        service: service,
+                        source: source,
+                        width: width
+                    })];
+            case 18:
+                data = _a.sent();
+                return [4 /*yield*/, data.save()];
+            case 19:
+                _a.sent();
+                return [2 /*return*/, block];
+            case 20: return [2 /*return*/];
         }
     });
 }); };

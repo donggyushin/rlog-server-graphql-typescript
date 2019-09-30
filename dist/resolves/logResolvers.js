@@ -43,7 +43,35 @@ var log_1 = __importDefault(require("../models/log"));
 var user_1 = __importDefault(require("../models/user"));
 var block_1 = __importDefault(require("../models/block"));
 var logData_1 = __importDefault(require("../models/logData"));
+var data_1 = __importDefault(require("../models/data"));
+var file_1 = __importDefault(require("../models/file"));
 // Mutations
+exports.deleteAllLogs = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, log_1.default.deleteMany({})];
+            case 1:
+                _a.sent();
+                return [4 /*yield*/, logData_1.default.deleteMany({})];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, block_1.default.deleteMany({})];
+            case 3:
+                _a.sent();
+                return [4 /*yield*/, data_1.default.deleteMany({})];
+            case 4:
+                _a.sent();
+                return [4 /*yield*/, file_1.default.deleteMany({})];
+            case 5:
+                _a.sent();
+                return [2 /*return*/, {
+                        ok: true,
+                        error: false,
+                        message: null
+                    }];
+        }
+    });
+}); };
 exports.deleteALog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var id, logToDelete;
     return __generator(this, function (_a) {
@@ -95,43 +123,71 @@ exports.changeLogTitle = function (parent, args) { return __awaiter(void 0, void
     });
 }); };
 exports.newLog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var title, userId, image, time, log, logData;
+    var title, userId, image, time, privateAsArgs, theLatestLogArray, theLatestLog, log, logData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                title = args.title, userId = args.userId, image = args.image, time = args.time;
+                title = args.title, userId = args.userId, image = args.image, time = args.time, privateAsArgs = args.privateAsArgs;
+                return [4 /*yield*/, log_1.default.find({ userId: userId }).limit(1).sort([['date', -1]])];
+            case 1:
+                theLatestLogArray = _a.sent();
+                theLatestLog = theLatestLogArray[0];
                 return [4 /*yield*/, new log_1.default({
                         title: title,
                         userId: userId,
-                        image: image
+                        image: image,
+                        private: privateAsArgs
                     })];
-            case 1:
-                log = _a.sent();
-                return [4 /*yield*/, log.save()];
             case 2:
+                log = _a.sent();
+                if (!theLatestLog) return [3 /*break*/, 4];
+                theLatestLog.nextLogId = log.id;
+                log.previousLogId = theLatestLog.id;
+                return [4 /*yield*/, theLatestLog.save()];
+            case 3:
                 _a.sent();
-                if (!(time === null)) return [3 /*break*/, 4];
+                _a.label = 4;
+            case 4: return [4 /*yield*/, log.save()];
+            case 5:
+                _a.sent();
+                if (!(time === null)) return [3 /*break*/, 7];
                 return [4 /*yield*/, new logData_1.default({
                         logId: log.id
                     })];
-            case 3:
+            case 6:
                 logData = _a.sent();
-                return [3 /*break*/, 6];
-            case 4: return [4 /*yield*/, new logData_1.default({
+                return [3 /*break*/, 9];
+            case 7: return [4 /*yield*/, new logData_1.default({
                     logId: log.id,
                     time: time
                 })];
-            case 5:
+            case 8:
                 logData = _a.sent();
-                _a.label = 6;
-            case 6: return [4 /*yield*/, logData.save()];
-            case 7:
+                _a.label = 9;
+            case 9: return [4 /*yield*/, logData.save()];
+            case 10:
                 _a.sent();
                 return [2 /*return*/, log];
         }
     });
 }); };
 // Queries
+exports.getMyLogs = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, page, skipNumber, logs;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userId = args.userId, page = args.page;
+                skipNumber = 50 * (page - 1);
+                return [4 /*yield*/, log_1.default.find({
+                        userId: userId
+                    }).limit(50).skip(skipNumber).sort([['date', -1]])];
+            case 1:
+                logs = _a.sent();
+                return [2 /*return*/, logs];
+        }
+    });
+}); };
 exports.getLogData = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var id, logData;
     return __generator(this, function (_a) {
@@ -174,14 +230,22 @@ exports.getAUser = function (parent, args) { return __awaiter(void 0, void 0, vo
     });
 }); };
 exports.getALog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, log;
+    var id, userId, log;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = args.id;
+                id = args.id, userId = args.userId;
                 return [4 /*yield*/, log_1.default.findById(id)];
             case 1:
                 log = _a.sent();
+                if (log.private === true) {
+                    if (log.userId === userId) {
+                        return [2 /*return*/, log];
+                    }
+                    else {
+                        return [2 /*return*/, null];
+                    }
+                }
                 return [2 /*return*/, log];
         }
     });
@@ -190,7 +254,7 @@ exports.getAllLogs = function (parent, args) { return __awaiter(void 0, void 0, 
     var logs;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, log_1.default.find()];
+            case 0: return [4 /*yield*/, log_1.default.find().sort([['date', -1]])];
             case 1:
                 logs = _a.sent();
                 return [2 /*return*/, logs];

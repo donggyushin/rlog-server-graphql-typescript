@@ -11,12 +11,13 @@ var schema_1 = __importDefault(require("./schema"));
 require("./mongoose/mongoose");
 require("./models");
 var dotenv_1 = __importDefault(require("dotenv"));
-var sendMessage_1 = require("./utils/sendMessage");
+var restApi_1 = __importDefault(require("./restApi"));
 dotenv_1.default.config();
 var app = express_1.default();
 var PORT = process.env.PORT;
 // Allow cross-origin requests
 app.use(cors_1.default());
+app.use('/api', restApi_1.default);
 app.use('/graphql', express_graphql_1.default({
     schema: schema_1.default,
     graphiql: true
@@ -25,5 +26,4 @@ app.use('/graphql', express_graphql_1.default({
 app.use('/playground', graphql_playground_middleware_express_1.default({
     endpoint: '/graphql'
 }));
-sendMessage_1.sendSMSMEssage();
 app.listen(PORT, function () { return console.log("Graphql server listening on port " + PORT); });

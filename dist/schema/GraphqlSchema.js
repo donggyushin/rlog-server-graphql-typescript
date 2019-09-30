@@ -14,6 +14,7 @@ var login_1 = __importDefault(require("../graphqlObjectTypes/login"));
 var loginResolvers_1 = require("../resolves/loginResolvers");
 var block_1 = __importDefault(require("../graphqlObjectTypes/block"));
 var blockResolvers_1 = require("../resolves/blockResolvers");
+var okayResponse_1 = __importDefault(require("../graphqlObjectTypes/okayResponse"));
 var RootQuery = new graphql_1.GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -42,13 +43,22 @@ var RootQuery = new graphql_1.GraphQLObjectType({
         log: {
             type: log_1.default,
             args: {
-                id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
+                id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) },
+                userId: { type: graphql_1.GraphQLString }
             },
             resolve: logResolvers_1.getALog
         },
         blocks: {
             type: new graphql_1.GraphQLList(block_1.default),
             resolve: blockResolvers_1.getAllBlocks
+        },
+        myLogs: {
+            type: new graphql_1.GraphQLList(log_1.default),
+            args: {
+                userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                page: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLInt) }
+            },
+            resolve: logResolvers_1.getMyLogs
         }
     }
 });
@@ -92,7 +102,7 @@ var RootMutation = new graphql_1.GraphQLObjectType({
             type: user_1.default,
             args: {
                 userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
-                verifyKey: { type: graphql_1.GraphQLString }
+                verifyKey: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
             },
             resolve: userResolvers_1.verifyUser
         },
@@ -128,9 +138,14 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 image: { type: graphql_1.GraphQLString },
                 time: {
                     type: graphql_1.GraphQLString
-                }
+                },
+                privateAsArgs: { type: graphql_1.GraphQLBoolean }
             },
             resolve: logResolvers_1.newLog
+        },
+        deleteAllLogs: {
+            type: okayResponse_1.default,
+            resolve: logResolvers_1.deleteAllLogs
         },
         changeLogTitle: {
             type: log_1.default,
@@ -162,7 +177,20 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 type: { type: graphql_1.GraphQLString },
                 text: { type: graphql_1.GraphQLString },
                 imageUrl: { type: graphql_1.GraphQLString },
-                stretched: { type: graphql_1.GraphQLBoolean }
+                stretched: { type: graphql_1.GraphQLBoolean },
+                caption: { type: graphql_1.GraphQLString },
+                embed: { type: graphql_1.GraphQLString },
+                height: { type: graphql_1.GraphQLInt },
+                service: { type: graphql_1.GraphQLString },
+                source: { type: graphql_1.GraphQLString },
+                width: { type: graphql_1.GraphQLInt },
+                level: { type: graphql_1.GraphQLInt },
+                withBackground: { type: graphql_1.GraphQLBoolean },
+                withBorder: { type: graphql_1.GraphQLBoolean },
+                link: { type: graphql_1.GraphQLString },
+                title: { type: graphql_1.GraphQLString },
+                description: { type: graphql_1.GraphQLString },
+                image: { type: graphql_1.GraphQLString },
             },
             resolve: blockResolvers_1.addNewBlock
         }

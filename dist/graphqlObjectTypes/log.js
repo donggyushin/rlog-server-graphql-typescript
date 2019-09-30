@@ -28,6 +28,12 @@ var LogType = new graphql_1.GraphQLObjectType({
         },
         private: {
             type: graphql_1.GraphQLBoolean
+        },
+        previousLogId: {
+            type: graphql_1.GraphQLString
+        },
+        nextLogId: {
+            type: graphql_1.GraphQLString
         }
     }); }
 });
