@@ -25,7 +25,7 @@ export const getData = async (parent, args): Promise<DataResponse> => {
 // Mutations
 
 export const addNewBlock = async (parent, args): Promise<blockResponse> => {
-    const { image, link, logId, type, text, imageUrl, stretched, caption, embed, height, service, source, width, level, withBackground, withBorder, title, description } = args;
+    const { publicId, image, link, logId, type, text, imageUrl, stretched, caption, embed, height, service, source, width, level, withBackground, withBorder, title, description } = args;
     const logData = await LogDataModel.findOne({
         logId
     });
@@ -82,9 +82,12 @@ export const addNewBlock = async (parent, args): Promise<blockResponse> => {
         data.withBackground = withBackground;
         await data.save();
         const dataId = data.id;
+        console.log('publicId:', publicId);
+        console.log('image url', imageUrl)
         const file = await new FileModel({
             dataId,
-            url: imageUrl
+            url: imageUrl,
+            publicId
         })
         await file.save()
         return block

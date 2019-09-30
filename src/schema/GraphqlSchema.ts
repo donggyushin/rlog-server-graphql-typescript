@@ -190,7 +190,7 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 title: { type: GraphQLString },
                 description: { type: GraphQLString },
                 image: { type: GraphQLString },
-
+                publicId: { type: GraphQLString }
             },
             resolve: addNewBlock
         }

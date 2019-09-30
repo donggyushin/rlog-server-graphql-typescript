@@ -9,6 +9,10 @@ const FileSchema = new mongoose.Schema({
     },
     url: {
         type: String
+    },
+    publicId: {
+        type: String,
+        required: true
     }
 })
 

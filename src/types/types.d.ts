@@ -106,12 +106,14 @@ export interface DataResponse {
 
 export interface IFile extends mongoose.Document {
     dataId: string,
-    url: string
+    url: string,
+    publicId: string
 }
 
 export interface FileResponse {
     dataId: string,
-    url: string
+    url: string,
+    publicId: string
 }
 
 export interface blockResponse {

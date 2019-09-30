@@ -4,7 +4,8 @@ const FileType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         dataId: { type: GraphQLString },
-        url: { type: GraphQLString }
+        url: { type: GraphQLString },
+        publicId: { type: GraphQLString }
     })
 })
 
