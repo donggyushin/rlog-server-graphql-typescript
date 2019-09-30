@@ -191,6 +191,7 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 title: { type: graphql_1.GraphQLString },
                 description: { type: graphql_1.GraphQLString },
                 image: { type: graphql_1.GraphQLString },
+                publicId: { type: graphql_1.GraphQLString }
             },
             resolve: blockResolvers_1.addNewBlock
         }

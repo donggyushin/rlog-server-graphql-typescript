@@ -74,11 +74,11 @@ exports.getData = function (parent, args) { return __awaiter(void 0, void 0, voi
 }); };
 // Mutations
 exports.addNewBlock = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var image, link, logId, type, text, imageUrl, stretched, caption, embed, height, service, source, width, level, withBackground, withBorder, title, description, logData, block, blockId, data, blockId, data, dataId, meta, metaId, newImage, blockId, data, dataId, file, blockId, data;
+    var publicId, image, link, logId, type, text, imageUrl, stretched, caption, embed, height, service, source, width, level, withBackground, withBorder, title, description, logData, block, blockId, data, blockId, data, dataId, meta, metaId, newImage, blockId, data, dataId, file, blockId, data;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                image = args.image, link = args.link, logId = args.logId, type = args.type, text = args.text, imageUrl = args.imageUrl, stretched = args.stretched, caption = args.caption, embed = args.embed, height = args.height, service = args.service, source = args.source, width = args.width, level = args.level, withBackground = args.withBackground, withBorder = args.withBorder, title = args.title, description = args.description;
+                publicId = args.publicId, image = args.image, link = args.link, logId = args.logId, type = args.type, text = args.text, imageUrl = args.imageUrl, stretched = args.stretched, caption = args.caption, embed = args.embed, height = args.height, service = args.service, source = args.source, width = args.width, level = args.level, withBackground = args.withBackground, withBorder = args.withBorder, title = args.title, description = args.description;
                 return [4 /*yield*/, logData_1.default.findOne({
                         logId: logId
                     })];
@@ -160,9 +160,12 @@ exports.addNewBlock = function (parent, args) { return __awaiter(void 0, void 0,
             case 14:
                 _a.sent();
                 dataId = data.id;
+                console.log('publicId:', publicId);
+                console.log('image url', imageUrl);
                 return [4 /*yield*/, new file_1.default({
                         dataId: dataId,
-                        url: imageUrl
+                        url: imageUrl,
+                        publicId: publicId
                     })];
             case 15:
                 file = _a.sent();

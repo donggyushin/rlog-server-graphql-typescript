@@ -12,6 +12,10 @@ var FileSchema = new mongoose_1.default.Schema({
     },
     url: {
         type: String
+    },
+    publicId: {
+        type: String,
+        required: true
     }
 });
 var FileModel = mongoose_1.default.model('File', FileSchema);

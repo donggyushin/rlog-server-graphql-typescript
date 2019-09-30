@@ -6,7 +6,8 @@ var FileType = new graphql_1.GraphQLObjectType({
     fields: function () { return ({
         id: { type: graphql_1.GraphQLID },
         dataId: { type: graphql_1.GraphQLString },
-        url: { type: graphql_1.GraphQLString }
+        url: { type: graphql_1.GraphQLString },
+        publicId: { type: graphql_1.GraphQLString }
     }); }
 });
 exports.default = FileType;
