@@ -26,7 +26,7 @@ var LogSchema = new mongoose_1.default.Schema({
     },
     month: {
         type: String,
-        default: new Date().getMonth()
+        default: new Date().getMonth() + 1
     },
     day: {
         type: String,
