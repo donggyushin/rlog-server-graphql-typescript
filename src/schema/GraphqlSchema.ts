@@ -10,7 +10,8 @@ import { loginResolve } from '../resolves/loginResolvers'
 import BlockType from '../graphqlObjectTypes/block'
 import { addNewBlock, getAllBlocks } from '../resolves/blockResolvers'
 import OkayResponseType from '../graphqlObjectTypes/okayResponse'
-
+import DestoryType from '../graphqlObjectTypes/destoryType'
+import { destroyImage } from '../resolves/destroyResolvers'
 
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
@@ -202,6 +203,13 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 publicId: { type: GraphQLString }
             },
             resolve: addNewBlock
+        },
+        destroyImage: {
+            type: DestoryType,
+            args: {
+                publicId: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: destroyImage
         }
     }
 })
