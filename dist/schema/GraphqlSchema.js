@@ -15,6 +15,8 @@ var loginResolvers_1 = require("../resolves/loginResolvers");
 var block_1 = __importDefault(require("../graphqlObjectTypes/block"));
 var blockResolvers_1 = require("../resolves/blockResolvers");
 var okayResponse_1 = __importDefault(require("../graphqlObjectTypes/okayResponse"));
+var destoryType_1 = __importDefault(require("../graphqlObjectTypes/destoryType"));
+var destroyResolvers_1 = require("../resolves/destroyResolvers");
 var RootQuery = new graphql_1.GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -139,9 +141,18 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 time: {
                     type: graphql_1.GraphQLString
                 },
-                privateAsArgs: { type: graphql_1.GraphQLBoolean }
+                privateAsArgs: { type: graphql_1.GraphQLBoolean },
+                imagePublicId: { type: graphql_1.GraphQLString }
             },
             resolve: logResolvers_1.newLog
+        },
+        deleteALogV2: {
+            type: log_1.default,
+            args: {
+                logId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: logResolvers_1.deleteALogV2
         },
         deleteAllLogs: {
             type: okayResponse_1.default,
@@ -194,6 +205,13 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 publicId: { type: graphql_1.GraphQLString }
             },
             resolve: blockResolvers_1.addNewBlock
+        },
+        destroyImage: {
+            type: destoryType_1.default,
+            args: {
+                publicId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: destroyResolvers_1.destroyImage
         }
     }
 });

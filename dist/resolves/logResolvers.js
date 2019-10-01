@@ -45,7 +45,119 @@ var block_1 = __importDefault(require("../models/block"));
 var logData_1 = __importDefault(require("../models/logData"));
 var data_1 = __importDefault(require("../models/data"));
 var file_1 = __importDefault(require("../models/file"));
+var cloudinary_1 = __importDefault(require("../cloudinary/cloudinary"));
+var meta_1 = __importDefault(require("../models/meta"));
 // Mutations
+exports.deleteALogV2 = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var logId, userId, log, logImagePublicId, logDataArray, logData, allBlocksOfLogData;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                logId = args.logId, userId = args.userId;
+                return [4 /*yield*/, log_1.default.findById(logId)];
+            case 1:
+                log = _a.sent();
+                if (!(log.userId === userId)) return [3 /*break*/, 6];
+                logImagePublicId = log.imagePublicId;
+                if (logImagePublicId !== null && logImagePublicId !== undefined) {
+                    cloudinary_1.default.uploader.destroy(logImagePublicId, function (error, result) {
+                        console.log('destroy log image error:', error);
+                        console.log('destroy log image result: ', result);
+                    });
+                }
+                return [4 /*yield*/, logData_1.default.find({
+                        logId: logId
+                    })];
+            case 2:
+                logDataArray = _a.sent();
+                logData = logDataArray[0];
+                return [4 /*yield*/, logData.remove()
+                    // Find all blocks of this logData
+                ];
+            case 3:
+                _a.sent();
+                return [4 /*yield*/, block_1.default.find({
+                        logDataId: logData.id
+                    })];
+            case 4:
+                allBlocksOfLogData = _a.sent();
+                allBlocksOfLogData.map(function (block) { return __awaiter(void 0, void 0, void 0, function () {
+                    var dataArray;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, data_1.default.find({
+                                    blockId: block.id
+                                })];
+                            case 1:
+                                dataArray = _a.sent();
+                                dataArray.map(function (data) { return __awaiter(void 0, void 0, void 0, function () {
+                                    var fileArray, metaArray;
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0: return [4 /*yield*/, file_1.default.find({
+                                                    dataId: data.id
+                                                })];
+                                            case 1:
+                                                fileArray = _a.sent();
+                                                fileArray.map(function (file) { return __awaiter(void 0, void 0, void 0, function () {
+                                                    var publicId;
+                                                    return __generator(this, function (_a) {
+                                                        switch (_a.label) {
+                                                            case 0:
+                                                                publicId = file.publicId;
+                                                                console.log('public id: ', publicId);
+                                                                if (publicId !== null && publicId !== undefined) {
+                                                                    cloudinary_1.default.uploader.destroy(publicId, function (error, result) {
+                                                                        console.log('error:', error);
+                                                                        console.log('destroy image result: ', result);
+                                                                    });
+                                                                }
+                                                                return [4 /*yield*/, file.remove()];
+                                                            case 1:
+                                                                _a.sent();
+                                                                return [2 /*return*/];
+                                                        }
+                                                    });
+                                                }); });
+                                                return [4 /*yield*/, meta_1.default.find({
+                                                        dataId: data.id
+                                                    })];
+                                            case 2:
+                                                metaArray = _a.sent();
+                                                metaArray.map(function (meta) { return __awaiter(void 0, void 0, void 0, function () {
+                                                    return __generator(this, function (_a) {
+                                                        switch (_a.label) {
+                                                            case 0: return [4 /*yield*/, meta.remove()];
+                                                            case 1:
+                                                                _a.sent();
+                                                                return [2 /*return*/];
+                                                        }
+                                                    });
+                                                }); });
+                                                return [4 /*yield*/, data.remove()];
+                                            case 3:
+                                                _a.sent();
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); });
+                                return [4 /*yield*/, block.remove()];
+                            case 2:
+                                _a.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+                // Delete every things
+                return [4 /*yield*/, log.remove()];
+            case 5:
+                // Delete every things
+                _a.sent();
+                return [2 /*return*/, log];
+            case 6: return [2 /*return*/, null];
+        }
+    });
+}); };
 exports.deleteAllLogs = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -123,11 +235,11 @@ exports.changeLogTitle = function (parent, args) { return __awaiter(void 0, void
     });
 }); };
 exports.newLog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var title, userId, image, time, privateAsArgs, theLatestLogArray, theLatestLog, log, logData;
+    var title, userId, image, time, privateAsArgs, imagePublicId, theLatestLogArray, theLatestLog, log, logData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                title = args.title, userId = args.userId, image = args.image, time = args.time, privateAsArgs = args.privateAsArgs;
+                title = args.title, userId = args.userId, image = args.image, time = args.time, privateAsArgs = args.privateAsArgs, imagePublicId = args.imagePublicId;
                 return [4 /*yield*/, log_1.default.find({ userId: userId }).limit(1).sort([['date', -1]])];
             case 1:
                 theLatestLogArray = _a.sent();
@@ -136,7 +248,8 @@ exports.newLog = function (parent, args) { return __awaiter(void 0, void 0, void
                         title: title,
                         userId: userId,
                         image: image,
-                        private: privateAsArgs
+                        private: privateAsArgs,
+                        imagePublicId: imagePublicId
                     })];
             case 2:
                 log = _a.sent();

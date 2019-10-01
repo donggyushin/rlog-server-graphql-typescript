@@ -20,6 +20,9 @@ var LogSchema = new mongoose_1.default.Schema({
     image: {
         type: String
     },
+    imagePublicId: {
+        type: String
+    },
     year: {
         type: String,
         default: new Date().getFullYear()

@@ -15,6 +15,7 @@ var LogType = new graphql_1.GraphQLObjectType({
         date: { type: graphql_1.GraphQLString },
         userId: { type: graphql_1.GraphQLString },
         image: { type: graphql_1.GraphQLString },
+        imagePublicId: { type: graphql_1.GraphQLString },
         year: { type: graphql_1.GraphQLString },
         month: { type: graphql_1.GraphQLString },
         day: { type: graphql_1.GraphQLString },
