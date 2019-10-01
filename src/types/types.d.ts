@@ -29,7 +29,8 @@ export interface ILog extends mongoose.Document {
     image: string,
     private: boolean,
     previousLogId: string,
-    nextLogId: string
+    nextLogId: string,
+    imagePublicId: string
 }
 
 export interface ILogData extends mongoose.Document {
@@ -129,7 +130,8 @@ export interface logResponse {
     image: string,
     private: boolean,
     previousLogId: string,
-    nextLogId: string
+    nextLogId: string,
+    imagePublicId: string
 }
 
 

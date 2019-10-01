@@ -1,12 +1,90 @@
 import LogModel from '../models/log'
 import UserModel from '../models/user';
-import { logResponse, UserResponse, blockResponse, LogDataResponse, OkayResponse } from '../types/types';
+import { logResponse, UserResponse, blockResponse, LogDataResponse, OkayResponse, IFile, IMeta } from '../types/types';
 import BlockModel from '../models/block';
 import LogDataModel from '../models/logData'
 import DataModel from '../models/data';
 import FileModel from '../models/file';
+import cloudinary from '../cloudinary/cloudinary';
+import MetaModel from '../models/meta';
 
 // Mutations
+export const deleteALogV2 = async (parent, args): Promise<logResponse> => {
+    const { logId, userId } = args;
+    const log = await LogModel.findById(logId);
+    if (log.userId === userId) {
+        // Find logdata of this log
+
+        const logImagePublicId = log.imagePublicId;
+        if (logImagePublicId !== null && logImagePublicId !== undefined) {
+            cloudinary.uploader.destroy(logImagePublicId, (error, result) => {
+                console.log('destroy log image error:', error)
+                console.log('destroy log image result: ', result)
+            })
+        }
+        const logDataArray = await LogDataModel.find({
+            logId
+        })
+        const logData = logDataArray[0];
+
+        await logData.remove()
+
+        // Find all blocks of this logData
+        const allBlocksOfLogData = await BlockModel.find({
+            logDataId: logData.id
+        })
+        allBlocksOfLogData.map(async block => {
+            // Find all datas from every block
+            const dataArray = await DataModel.find({
+                blockId: block.id
+            })
+
+            dataArray.map(async data => {
+                // Find all files of data
+                const fileArray: IFile[] = await FileModel.find({
+                    dataId: data.id
+                })
+                fileArray.map(async (file: IFile) => {
+                    // Delete image file from cloudinary with public id when this file has a public id
+                    const publicId = file.publicId
+                    console.log('public id: ', publicId)
+                    if (publicId !== null && publicId !== undefined) {
+                        cloudinary.uploader.destroy(publicId, (error, result) => {
+                            console.log('error:', error)
+                            console.log('destroy image result: ', result)
+                        })
+                    }
+
+                    await file.remove();
+                })
+
+                // Find all metas of data
+                const metaArray: IMeta[] = await MetaModel.find({
+                    dataId: data.id
+                })
+                metaArray.map(async meta => {
+                    await meta.remove()
+                })
+
+                await data.remove()
+
+            })
+
+            await block.remove()
+
+        })
+
+
+        // Delete every things
+
+        await log.remove();
+        return log
+    } else {
+        return null
+    }
+}
+
+
 export const deleteAllLogs = async (parent, args): Promise<OkayResponse> => {
     await LogModel.deleteMany({})
     await LogDataModel.deleteMany({})
@@ -51,7 +129,8 @@ export const newLog = async (parent, args): Promise<logResponse> => {
         userId,
         image,
         time,
-        privateAsArgs
+        privateAsArgs,
+        imagePublicId
     } = args;
 
     const theLatestLogArray = await LogModel.find({ userId }).limit(1).sort([['date', -1]]);
@@ -60,7 +139,8 @@ export const newLog = async (parent, args): Promise<logResponse> => {
         title,
         userId,
         image,
-        private: privateAsArgs
+        private: privateAsArgs,
+        imagePublicId
     })
     if (theLatestLog) {
         theLatestLog.nextLogId = log.id;

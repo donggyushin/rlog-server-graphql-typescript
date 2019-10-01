@@ -17,6 +17,9 @@ const LogSchema: mongoose.Schema = new mongoose.Schema({
     image: {
         type: String
     },
+    imagePublicId: {
+        type: String
+    },
     year: {
         type: String,
         default: new Date().getFullYear()

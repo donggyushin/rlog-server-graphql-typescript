@@ -4,7 +4,7 @@ import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
 import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword, allocateVerifyKeyToUser, verifyUser } from '../resolves/userResolvers'
 import LogType from '../graphqlObjectTypes/log'
-import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog, deleteAllLogs, getMyLogs } from '../resolves/logResolvers'
+import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog, deleteAllLogs, getMyLogs, deleteALogV2 } from '../resolves/logResolvers'
 import LoginType from '../graphqlObjectTypes/login'
 import { loginResolve } from '../resolves/loginResolvers'
 import BlockType from '../graphqlObjectTypes/block'
@@ -138,9 +138,18 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 time: {
                     type: GraphQLString
                 },
-                privateAsArgs: { type: GraphQLBoolean }
+                privateAsArgs: { type: GraphQLBoolean },
+                imagePublicId: { type: GraphQLString }
             },
             resolve: newLog
+        },
+        deleteALogV2: {
+            type: LogType,
+            args: {
+                logId: { type: new GraphQLNonNull(GraphQLString) },
+                userId: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: deleteALogV2
         },
         deleteAllLogs: {
             type: OkayResponseType,

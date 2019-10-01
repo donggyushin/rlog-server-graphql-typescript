@@ -12,6 +12,7 @@ const LogType: GraphQLObjectType = new GraphQLObjectType({
         date: { type: GraphQLString },
         userId: { type: GraphQLString },
         image: { type: GraphQLString },
+        imagePublicId: { type: GraphQLString },
         year: { type: GraphQLString },
         month: { type: GraphQLString },
         day: { type: GraphQLString },
