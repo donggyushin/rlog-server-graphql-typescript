@@ -89,6 +89,7 @@ export const addNewBlock = async (parent, args): Promise<blockResponse> => {
             url: imageUrl,
             publicId
         })
+        console.log('file:', file)
         await file.save()
         return block
     } else if (type === 'embed') {

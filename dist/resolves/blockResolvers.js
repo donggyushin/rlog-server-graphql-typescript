@@ -169,6 +169,7 @@ exports.addNewBlock = function (parent, args) { return __awaiter(void 0, void 0,
                     })];
             case 15:
                 file = _a.sent();
+                console.log('file:', file);
                 return [4 /*yield*/, file.save()];
             case 16:
                 _a.sent();
