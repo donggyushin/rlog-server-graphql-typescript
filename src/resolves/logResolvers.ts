@@ -86,6 +86,31 @@ export const deleteAllDatasFromLog = async (parent, args): Promise<logResponse> 
 export const deleteALogV2 = async (parent, args): Promise<logResponse> => {
     const { logId, userId } = args;
     const log = await LogModel.findById(logId);
+    const nextLog = await LogModel.findById(log.nextLogId);
+    const previousLog = await LogModel.findById(log.previousLogId);
+    console.log('next log:', nextLog);
+    console.log('previous log:', previousLog);
+    // When the log to delete is the last log
+    if (nextLog === null && previousLog !== null) {
+        previousLog.nextLogId = null
+        previousLog.save()
+    } else if (nextLog !== null && previousLog != null) {
+        // When the log to delete is a middle log
+        previousLog.nextLogId = nextLog.id;
+        nextLog.previousLogId = previousLog.id;
+        previousLog.save()
+        nextLog.save()
+
+    } else if (previousLog === null && nextLog === null) {
+        // When the log to delete is a only log
+
+    } else if (previousLog === null && nextLog !== null) {
+        // When the log to delete is not a only log and first log
+        nextLog.previousLogId = null;
+        nextLog.save()
+    }
+
+
     if (log.userId === userId) {
         // Find logdata of this log
 

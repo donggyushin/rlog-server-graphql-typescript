@@ -47,8 +47,7 @@ var data_1 = __importDefault(require("../models/data"));
 var file_1 = __importDefault(require("../models/file"));
 var cloudinary_1 = __importDefault(require("../cloudinary/cloudinary"));
 var meta_1 = __importDefault(require("../models/meta"));
-// Mutations
-exports.deleteALogV2 = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+exports.deleteAllDatasFromLog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var logId, userId, log, logImagePublicId, logDataArray, logData, allBlocksOfLogData;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -57,7 +56,7 @@ exports.deleteALogV2 = function (parent, args) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, log_1.default.findById(logId)];
             case 1:
                 log = _a.sent();
-                if (!(log.userId === userId)) return [3 /*break*/, 6];
+                if (!(log.userId === userId)) return [3 /*break*/, 4];
                 logImagePublicId = log.imagePublicId;
                 if (logImagePublicId !== null && logImagePublicId !== undefined) {
                     cloudinary_1.default.uploader.destroy(logImagePublicId, function (error, result) {
@@ -71,15 +70,145 @@ exports.deleteALogV2 = function (parent, args) { return __awaiter(void 0, void 0
             case 2:
                 logDataArray = _a.sent();
                 logData = logDataArray[0];
+                return [4 /*yield*/, block_1.default.find({
+                        logDataId: logData.id
+                    })];
+            case 3:
+                allBlocksOfLogData = _a.sent();
+                allBlocksOfLogData.map(function (block) { return __awaiter(void 0, void 0, void 0, function () {
+                    var dataArray;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, data_1.default.find({
+                                    blockId: block.id
+                                })];
+                            case 1:
+                                dataArray = _a.sent();
+                                dataArray.map(function (data) { return __awaiter(void 0, void 0, void 0, function () {
+                                    var fileArray, metaArray;
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0: return [4 /*yield*/, file_1.default.find({
+                                                    dataId: data.id
+                                                })];
+                                            case 1:
+                                                fileArray = _a.sent();
+                                                fileArray.map(function (file) { return __awaiter(void 0, void 0, void 0, function () {
+                                                    var publicId;
+                                                    return __generator(this, function (_a) {
+                                                        switch (_a.label) {
+                                                            case 0:
+                                                                publicId = file.publicId;
+                                                                console.log('public id: ', publicId);
+                                                                if (publicId !== null && publicId !== undefined) {
+                                                                    cloudinary_1.default.uploader.destroy(publicId, function (error, result) {
+                                                                        console.log('error:', error);
+                                                                        console.log('destroy image result: ', result);
+                                                                    });
+                                                                }
+                                                                return [4 /*yield*/, file.remove()];
+                                                            case 1:
+                                                                _a.sent();
+                                                                return [2 /*return*/];
+                                                        }
+                                                    });
+                                                }); });
+                                                return [4 /*yield*/, meta_1.default.find({
+                                                        dataId: data.id
+                                                    })];
+                                            case 2:
+                                                metaArray = _a.sent();
+                                                metaArray.map(function (meta) { return __awaiter(void 0, void 0, void 0, function () {
+                                                    return __generator(this, function (_a) {
+                                                        switch (_a.label) {
+                                                            case 0: return [4 /*yield*/, meta.remove()];
+                                                            case 1:
+                                                                _a.sent();
+                                                                return [2 /*return*/];
+                                                        }
+                                                    });
+                                                }); });
+                                                return [4 /*yield*/, data.remove()];
+                                            case 3:
+                                                _a.sent();
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); });
+                                return [4 /*yield*/, block.remove()];
+                            case 2:
+                                _a.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+                // Delete every things
+                return [2 /*return*/, log];
+            case 4: return [2 /*return*/, null];
+        }
+    });
+}); };
+// Mutations
+exports.deleteALogV2 = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var logId, userId, log, nextLog, previousLog, logImagePublicId, logDataArray, logData, allBlocksOfLogData;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                logId = args.logId, userId = args.userId;
+                return [4 /*yield*/, log_1.default.findById(logId)];
+            case 1:
+                log = _a.sent();
+                return [4 /*yield*/, log_1.default.findById(log.nextLogId)];
+            case 2:
+                nextLog = _a.sent();
+                return [4 /*yield*/, log_1.default.findById(log.previousLogId)];
+            case 3:
+                previousLog = _a.sent();
+                console.log('next log:', nextLog);
+                console.log('previous log:', previousLog);
+                // When the log to delete is the last log
+                if (nextLog === null && previousLog !== null) {
+                    previousLog.nextLogId = null;
+                    previousLog.save();
+                }
+                else if (nextLog !== null && previousLog != null) {
+                    // When the log to delete is a middle log
+                    previousLog.nextLogId = nextLog.id;
+                    nextLog.previousLogId = previousLog.id;
+                    previousLog.save();
+                    nextLog.save();
+                }
+                else if (previousLog === null && nextLog === null) {
+                    // When the log to delete is a only log
+                }
+                else if (previousLog === null && nextLog !== null) {
+                    // When the log to delete is not a only log and first log
+                    nextLog.previousLogId = null;
+                    nextLog.save();
+                }
+                if (!(log.userId === userId)) return [3 /*break*/, 8];
+                logImagePublicId = log.imagePublicId;
+                if (logImagePublicId !== null && logImagePublicId !== undefined) {
+                    cloudinary_1.default.uploader.destroy(logImagePublicId, function (error, result) {
+                        console.log('destroy log image error:', error);
+                        console.log('destroy log image result: ', result);
+                    });
+                }
+                return [4 /*yield*/, logData_1.default.find({
+                        logId: logId
+                    })];
+            case 4:
+                logDataArray = _a.sent();
+                logData = logDataArray[0];
                 return [4 /*yield*/, logData.remove()
                     // Find all blocks of this logData
                 ];
-            case 3:
+            case 5:
                 _a.sent();
                 return [4 /*yield*/, block_1.default.find({
                         logDataId: logData.id
                     })];
-            case 4:
+            case 6:
                 allBlocksOfLogData = _a.sent();
                 allBlocksOfLogData.map(function (block) { return __awaiter(void 0, void 0, void 0, function () {
                     var dataArray;
@@ -150,11 +279,11 @@ exports.deleteALogV2 = function (parent, args) { return __awaiter(void 0, void 0
                 }); });
                 // Delete every things
                 return [4 /*yield*/, log.remove()];
-            case 5:
+            case 7:
                 // Delete every things
                 _a.sent();
                 return [2 /*return*/, log];
-            case 6: return [2 /*return*/, null];
+            case 8: return [2 /*return*/, null];
         }
     });
 }); };
@@ -201,15 +330,24 @@ exports.deleteALog = function (parent, args) { return __awaiter(void 0, void 0, 
     });
 }); };
 exports.changeLogImage = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, newImage, log;
+    var id, newImage, publicId, log, previousLogImagePublicId;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = args.id, newImage = args.newImage;
+                id = args.id, newImage = args.newImage, publicId = args.publicId;
                 return [4 /*yield*/, log_1.default.findById(id)];
             case 1:
                 log = _a.sent();
+                previousLogImagePublicId = log.imagePublicId;
+                if (previousLogImagePublicId) {
+                    cloudinary_1.default.uploader.destroy(previousLogImagePublicId, function (error, result) {
+                        console.log('destroy log image error:', error);
+                        console.log('destroy log image result: ', result);
+                    });
+                }
+                console.log('newImage:', newImage);
                 log.image = newImage;
+                log.imagePublicId = publicId;
                 return [4 /*yield*/, log.save()];
             case 2:
                 _a.sent();

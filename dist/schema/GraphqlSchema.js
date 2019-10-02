@@ -170,7 +170,8 @@ var RootMutation = new graphql_1.GraphQLObjectType({
             type: log_1.default,
             args: {
                 id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
-                newImage: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+                newImage: { type: graphql_1.GraphQLString },
+                publicId: { type: graphql_1.GraphQLString }
             },
             resolve: logResolvers_1.changeLogImage
         },
@@ -180,6 +181,14 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
             },
             resolve: logResolvers_1.deleteALog
+        },
+        deleteAllBlocksFromLog: {
+            type: log_1.default,
+            args: {
+                logId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: logResolvers_1.deleteAllDatasFromLog
         },
         addBlock: {
             type: block_1.default,
