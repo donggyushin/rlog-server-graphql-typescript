@@ -8,6 +8,80 @@ import FileModel from '../models/file';
 import cloudinary from '../cloudinary/cloudinary';
 import MetaModel from '../models/meta';
 
+export const deleteAllDatasFromLog = async (parent, args): Promise<logResponse> => {
+    const { logId, userId } = args;
+    const log = await LogModel.findById(logId);
+    if (log.userId === userId) {
+        // Find logdata of this log
+
+        const logImagePublicId = log.imagePublicId;
+        if (logImagePublicId !== null && logImagePublicId !== undefined) {
+            cloudinary.uploader.destroy(logImagePublicId, (error, result) => {
+                console.log('destroy log image error:', error)
+                console.log('destroy log image result: ', result)
+            })
+        }
+        const logDataArray = await LogDataModel.find({
+            logId
+        })
+        const logData = logDataArray[0];
+
+
+
+        // Find all blocks of this logData
+        const allBlocksOfLogData = await BlockModel.find({
+            logDataId: logData.id
+        })
+        allBlocksOfLogData.map(async block => {
+            // Find all datas from every block
+            const dataArray = await DataModel.find({
+                blockId: block.id
+            })
+
+            dataArray.map(async data => {
+                // Find all files of data
+                const fileArray: IFile[] = await FileModel.find({
+                    dataId: data.id
+                })
+                fileArray.map(async (file: IFile) => {
+                    // Delete image file from cloudinary with public id when this file has a public id
+                    const publicId = file.publicId
+                    console.log('public id: ', publicId)
+                    if (publicId !== null && publicId !== undefined) {
+                        cloudinary.uploader.destroy(publicId, (error, result) => {
+                            console.log('error:', error)
+                            console.log('destroy image result: ', result)
+                        })
+                    }
+
+                    await file.remove();
+                })
+
+                // Find all metas of data
+                const metaArray: IMeta[] = await MetaModel.find({
+                    dataId: data.id
+                })
+                metaArray.map(async meta => {
+                    await meta.remove()
+                })
+
+                await data.remove()
+
+            })
+
+            await block.remove()
+
+        })
+
+
+        // Delete every things
+
+        return log
+    } else {
+        return null
+    }
+}
+
 // Mutations
 export const deleteALogV2 = async (parent, args): Promise<logResponse> => {
     const { logId, userId } = args;
@@ -108,9 +182,19 @@ export const deleteALog = async (parent, args): Promise<logResponse> => {
 }
 
 export const changeLogImage = async (parent, args): Promise<logResponse> => {
-    const { id, newImage } = args;
+    const { id, newImage, publicId } = args;
     const log = await LogModel.findById(id);
+    const previousLogImagePublicId = log.imagePublicId;
+    if (previousLogImagePublicId) {
+        cloudinary.uploader.destroy(previousLogImagePublicId, (error, result) => {
+            console.log('destroy log image error:', error)
+            console.log('destroy log image result: ', result)
+        })
+    }
+    console.log('newImage:', newImage)
+
     log.image = newImage;
+    log.imagePublicId = publicId
     await log.save()
     return log
 }
