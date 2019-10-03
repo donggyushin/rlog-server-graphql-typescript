@@ -14,6 +14,7 @@ import DestoryType from '../graphqlObjectTypes/destoryType'
 import { destroyImage } from '../resolves/destroyResolvers'
 import LengthType from '../graphqlObjectTypes/length'
 import { getMyLogsLength } from '../resolves/lengthResolvers'
+import UploadImageToCloudinaryType from '../graphqlObjectTypes/uploadImageToCloudinary'
 
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
@@ -229,7 +230,13 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 publicId: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: destroyImage
-        }
+        },
+        // uploadImageToCloudinary:{
+        //     type:UploadImageToCloudinaryType,
+        //     args:{
+        //         imageFile:{type: Graphql}
+        //     }
+        // }
     }
 })
 

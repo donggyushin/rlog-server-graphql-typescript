@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var url_metadata_1 = __importDefault(require("url-metadata"));
+var cloudinary_1 = __importDefault(require("../cloudinary/cloudinary"));
 var router = express_1.default.Router();
 router.get('/fetchUrl', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var url, metadata, title, image, description;
@@ -68,4 +69,24 @@ router.get('/fetchUrl', function (req, res) { return __awaiter(void 0, void 0, v
         }
     });
 }); });
+router.post('/image-to-cloudinary', function (req, res) {
+    var imageFile = req.files.file;
+    console.log(imageFile);
+    cloudinary_1.default.uploader.upload('/tmp/tmp-1-1570120540624', function (err, result) {
+        if (err) {
+            console.log('error:', err);
+            res.json({
+                imageUrl: null,
+                publicId: null
+            });
+        }
+        else {
+            console.log('result:', result);
+            res.json({
+                imageUrl: result.secure_url,
+                publicId: result.public_id
+            });
+        }
+    });
+});
 exports.default = router;

@@ -231,7 +231,7 @@ var RootMutation = new graphql_1.GraphQLObjectType({
                 publicId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
             },
             resolve: destroyResolvers_1.destroyImage
-        }
+        },
     }
 });
 var graphqlSchema = new graphql_1.GraphQLSchema({

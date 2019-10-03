@@ -10,6 +10,7 @@ import dotenv from 'dotenv'
 import RestApi from './restApi'
 import http from 'http';
 import https from 'https';
+import fileUpload from 'express-fileupload';
 
 let env = process.env.NODE_ENV || 'dev';
 
@@ -32,6 +33,10 @@ const credentials = {
 dotenv.config()
 const app = express();
 
+app.use(fileUpload({
+    useTempFiles: true
+}))
+
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
@@ -53,6 +58,7 @@ app.use('/graphql', graphqlHttp({
 app.use('/playground', expressPlayground({
     endpoint: '/graphql'
 }))
+
 
 if (env === 'dev') {
     httpServer.listen(PORT, () => console.log(`Graphql server listening on port ${PORT}`))

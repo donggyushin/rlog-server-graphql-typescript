@@ -15,6 +15,7 @@ var dotenv_1 = __importDefault(require("dotenv"));
 var restApi_1 = __importDefault(require("./restApi"));
 var http_1 = __importDefault(require("http"));
 var https_1 = __importDefault(require("https"));
+var express_fileupload_1 = __importDefault(require("express-fileupload"));
 var env = process.env.NODE_ENV || 'dev';
 console.log(__dirname);
 var key = fs_1.default.readFileSync(__dirname + '/secret/privkey.pem');
@@ -27,6 +28,9 @@ var credentials = {
 };
 dotenv_1.default.config();
 var app = express_1.default();
+app.use(express_fileupload_1.default({
+    useTempFiles: true
+}));
 var httpServer = http_1.default.createServer(app);
 var httpsServer = https_1.default.createServer(credentials, app);
 var PORT = process.env.PORT;
