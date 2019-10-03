@@ -47,6 +47,7 @@ var data_1 = __importDefault(require("../models/data"));
 var file_1 = __importDefault(require("../models/file"));
 var cloudinary_1 = __importDefault(require("../cloudinary/cloudinary"));
 var meta_1 = __importDefault(require("../models/meta"));
+// Mutations
 exports.deleteAllDatasFromLog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var logId, userId, log, logImagePublicId, logDataArray, logData, allBlocksOfLogData;
     return __generator(this, function (_a) {
@@ -148,7 +149,6 @@ exports.deleteAllDatasFromLog = function (parent, args) { return __awaiter(void 
         }
     });
 }); };
-// Mutations
 exports.deleteALogV2 = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var logId, userId, log, nextLog, previousLog, logImagePublicId, logDataArray, logData, allBlocksOfLogData;
     return __generator(this, function (_a) {
@@ -356,15 +356,16 @@ exports.changeLogImage = function (parent, args) { return __awaiter(void 0, void
     });
 }); };
 exports.changeLogTitle = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, newTitle, log;
+    var id, newTitle, privateAsArg, log;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = args.id, newTitle = args.newTitle;
+                id = args.id, newTitle = args.newTitle, privateAsArg = args.privateAsArg;
                 return [4 /*yield*/, log_1.default.findById(id)];
             case 1:
                 log = _a.sent();
                 log.title = newTitle;
+                log.private = privateAsArg;
                 return [4 /*yield*/, log.save()];
             case 2:
                 _a.sent();

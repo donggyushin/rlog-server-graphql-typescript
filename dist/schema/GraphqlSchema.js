@@ -17,6 +17,8 @@ var blockResolvers_1 = require("../resolves/blockResolvers");
 var okayResponse_1 = __importDefault(require("../graphqlObjectTypes/okayResponse"));
 var destoryType_1 = __importDefault(require("../graphqlObjectTypes/destoryType"));
 var destroyResolvers_1 = require("../resolves/destroyResolvers");
+var length_1 = __importDefault(require("../graphqlObjectTypes/length"));
+var lengthResolvers_1 = require("../resolves/lengthResolvers");
 var RootQuery = new graphql_1.GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -61,6 +63,13 @@ var RootQuery = new graphql_1.GraphQLObjectType({
                 page: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLInt) }
             },
             resolve: logResolvers_1.getMyLogs
+        },
+        getMyLogsLength: {
+            type: length_1.default,
+            args: {
+                userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: lengthResolvers_1.getMyLogsLength
         }
     }
 });
@@ -162,7 +171,8 @@ var RootMutation = new graphql_1.GraphQLObjectType({
             type: log_1.default,
             args: {
                 id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
-                newTitle: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+                newTitle: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) },
+                privateAsArg: { type: graphql_1.GraphQLBoolean }
             },
             resolve: logResolvers_1.changeLogTitle
         },

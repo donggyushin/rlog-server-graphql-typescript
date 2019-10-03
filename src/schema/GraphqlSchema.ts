@@ -12,6 +12,8 @@ import { addNewBlock, getAllBlocks } from '../resolves/blockResolvers'
 import OkayResponseType from '../graphqlObjectTypes/okayResponse'
 import DestoryType from '../graphqlObjectTypes/destoryType'
 import { destroyImage } from '../resolves/destroyResolvers'
+import LengthType from '../graphqlObjectTypes/length'
+import { getMyLogsLength } from '../resolves/lengthResolvers'
 
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
@@ -58,6 +60,13 @@ const RootQuery: GraphQLObjectType = new GraphQLObjectType({
                 page: { type: new GraphQLNonNull(GraphQLInt) }
             },
             resolve: getMyLogs
+        },
+        getMyLogsLength: {
+            type: LengthType,
+            args: {
+                userId: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: getMyLogsLength
         }
     }
 })
@@ -160,7 +169,8 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
             type: LogType,
             args: {
                 id: { type: new GraphQLNonNull(GraphQLString) },
-                newTitle: { type: new GraphQLNonNull(GraphQLString) }
+                newTitle: { type: new GraphQLNonNull(GraphQLString) },
+                privateAsArg: { type: GraphQLBoolean }
             },
             resolve: changeLogTitle
         },

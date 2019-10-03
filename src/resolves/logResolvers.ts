@@ -8,6 +8,9 @@ import FileModel from '../models/file';
 import cloudinary from '../cloudinary/cloudinary';
 import MetaModel from '../models/meta';
 
+
+
+// Mutations
 export const deleteAllDatasFromLog = async (parent, args): Promise<logResponse> => {
     const { logId, userId } = args;
     const log = await LogModel.findById(logId);
@@ -82,7 +85,6 @@ export const deleteAllDatasFromLog = async (parent, args): Promise<logResponse> 
     }
 }
 
-// Mutations
 export const deleteALogV2 = async (parent, args): Promise<logResponse> => {
     const { logId, userId } = args;
     const log = await LogModel.findById(logId);
@@ -225,9 +227,10 @@ export const changeLogImage = async (parent, args): Promise<logResponse> => {
 }
 
 export const changeLogTitle = async (parent, args): Promise<logResponse> => {
-    const { id, newTitle } = args
+    const { id, newTitle, privateAsArg } = args
     const log = await LogModel.findById(id);
     log.title = newTitle
+    log.private = privateAsArg
     await log.save()
     return log
 }
