@@ -49,7 +49,7 @@ var cloudinary_1 = __importDefault(require("../cloudinary/cloudinary"));
 var meta_1 = __importDefault(require("../models/meta"));
 // Mutations
 exports.deleteAllDatasFromLog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var logId, userId, log, logImagePublicId, logDataArray, logData, allBlocksOfLogData;
+    var logId, userId, log, logDataArray, logData, allBlocksOfLogData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -58,13 +58,6 @@ exports.deleteAllDatasFromLog = function (parent, args) { return __awaiter(void 
             case 1:
                 log = _a.sent();
                 if (!(log.userId === userId)) return [3 /*break*/, 4];
-                logImagePublicId = log.imagePublicId;
-                if (logImagePublicId !== null && logImagePublicId !== undefined) {
-                    cloudinary_1.default.uploader.destroy(logImagePublicId, function (error, result) {
-                        console.log('destroy log image error:', error);
-                        console.log('destroy log image result: ', result);
-                    });
-                }
                 return [4 /*yield*/, logData_1.default.find({
                         logId: logId
                     })];
@@ -339,6 +332,8 @@ exports.changeLogImage = function (parent, args) { return __awaiter(void 0, void
             case 1:
                 log = _a.sent();
                 previousLogImagePublicId = log.imagePublicId;
+                console.log('public id that server received:', publicId);
+                console.log('previous log image public id:', previousLogImagePublicId);
                 if (previousLogImagePublicId) {
                     cloudinary_1.default.uploader.destroy(previousLogImagePublicId, function (error, result) {
                         console.log('destroy log image error:', error);

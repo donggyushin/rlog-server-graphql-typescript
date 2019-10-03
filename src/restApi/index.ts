@@ -24,9 +24,22 @@ router.get('/fetchUrl', async (req, res) => {
 })
 
 router.post('/image-to-cloudinary', (req, res) => {
-    let imageFile = req.files.file;
-    console.log(imageFile)
-    cloudinary.uploader.upload('/tmp/tmp-1-1570120540624', (err, result) => {
+    let imageFile;
+    try {
+        imageFile = req.files.file;
+    } catch (err) {
+        res.json({
+            imageUrl: null,
+            publicId: null
+        })
+    }
+
+    console.log('image file:', imageFile)
+
+    // @ts-ignore
+    console.log(imageFile.tempFilePath)
+    // @ts-ignore
+    cloudinary.uploader.upload(imageFile.tempFilePath, (err, result) => {
         if (err) {
             console.log('error:', err)
             res.json({

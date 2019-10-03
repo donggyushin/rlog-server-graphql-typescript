@@ -17,13 +17,13 @@ export const deleteAllDatasFromLog = async (parent, args): Promise<logResponse> 
     if (log.userId === userId) {
         // Find logdata of this log
 
-        const logImagePublicId = log.imagePublicId;
-        if (logImagePublicId !== null && logImagePublicId !== undefined) {
-            cloudinary.uploader.destroy(logImagePublicId, (error, result) => {
-                console.log('destroy log image error:', error)
-                console.log('destroy log image result: ', result)
-            })
-        }
+        // const logImagePublicId = log.imagePublicId;
+        // if (logImagePublicId !== null && logImagePublicId !== undefined) {
+        //     cloudinary.uploader.destroy(logImagePublicId, (error, result) => {
+        //         console.log('destroy log image error:', error)
+        //         console.log('destroy log image result: ', result)
+        //     })
+        // }
         const logDataArray = await LogDataModel.find({
             logId
         })
@@ -212,6 +212,8 @@ export const changeLogImage = async (parent, args): Promise<logResponse> => {
     const { id, newImage, publicId } = args;
     const log = await LogModel.findById(id);
     const previousLogImagePublicId = log.imagePublicId;
+    console.log('public id that server received:', publicId);
+    console.log('previous log image public id:', previousLogImagePublicId);
     if (previousLogImagePublicId) {
         cloudinary.uploader.destroy(previousLogImagePublicId, (error, result) => {
             console.log('destroy log image error:', error)

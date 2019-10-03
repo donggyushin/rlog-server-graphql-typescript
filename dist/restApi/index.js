@@ -70,9 +70,21 @@ router.get('/fetchUrl', function (req, res) { return __awaiter(void 0, void 0, v
     });
 }); });
 router.post('/image-to-cloudinary', function (req, res) {
-    var imageFile = req.files.file;
-    console.log(imageFile);
-    cloudinary_1.default.uploader.upload('/tmp/tmp-1-1570120540624', function (err, result) {
+    var imageFile;
+    try {
+        imageFile = req.files.file;
+    }
+    catch (err) {
+        res.json({
+            imageUrl: null,
+            publicId: null
+        });
+    }
+    console.log('image file:', imageFile);
+    // @ts-ignore
+    console.log(imageFile.tempFilePath);
+    // @ts-ignore
+    cloudinary_1.default.uploader.upload(imageFile.tempFilePath, function (err, result) {
         if (err) {
             console.log('error:', err);
             res.json({
