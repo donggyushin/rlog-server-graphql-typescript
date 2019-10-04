@@ -30,6 +30,9 @@ var LogType = new graphql_1.GraphQLObjectType({
         private: {
             type: graphql_1.GraphQLBoolean
         },
+        private2: {
+            type: graphql_1.GraphQLBoolean
+        },
         previousLogId: {
             type: graphql_1.GraphQLString
         },

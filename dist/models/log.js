@@ -39,6 +39,10 @@ var LogSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: true
     },
+    private2: {
+        type: Boolean,
+        default: true
+    },
     previousLogId: {
         type: String
     },

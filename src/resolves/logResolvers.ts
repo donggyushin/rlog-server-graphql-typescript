@@ -230,9 +230,11 @@ export const changeLogImage = async (parent, args): Promise<logResponse> => {
 
 export const changeLogTitle = async (parent, args): Promise<logResponse> => {
     const { id, newTitle, privateAsArg } = args
+    console.log('change private2:', privateAsArg)
     const log = await LogModel.findById(id);
     log.title = newTitle
     log.private = privateAsArg
+    log.private2 = privateAsArg;
     await log.save()
     return log
 }
@@ -254,7 +256,8 @@ export const newLog = async (parent, args): Promise<logResponse> => {
         userId,
         image,
         private: privateAsArgs,
-        imagePublicId
+        imagePublicId,
+        private2: privateAsArgs
     })
     if (theLatestLog) {
         theLatestLog.nextLogId = log.id;

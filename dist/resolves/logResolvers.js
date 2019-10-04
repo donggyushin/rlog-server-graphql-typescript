@@ -356,11 +356,13 @@ exports.changeLogTitle = function (parent, args) { return __awaiter(void 0, void
         switch (_a.label) {
             case 0:
                 id = args.id, newTitle = args.newTitle, privateAsArg = args.privateAsArg;
+                console.log('change private2:', privateAsArg);
                 return [4 /*yield*/, log_1.default.findById(id)];
             case 1:
                 log = _a.sent();
                 log.title = newTitle;
                 log.private = privateAsArg;
+                log.private2 = privateAsArg;
                 return [4 /*yield*/, log.save()];
             case 2:
                 _a.sent();
@@ -383,7 +385,8 @@ exports.newLog = function (parent, args) { return __awaiter(void 0, void 0, void
                         userId: userId,
                         image: image,
                         private: privateAsArgs,
-                        imagePublicId: imagePublicId
+                        imagePublicId: imagePublicId,
+                        private2: privateAsArgs
                     })];
             case 2:
                 log = _a.sent();
