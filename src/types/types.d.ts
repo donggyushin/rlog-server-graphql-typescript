@@ -19,7 +19,8 @@ export interface IUser extends mongoose.Document {
     profilePhoto: string,
     password: string,
     verifyKey: string,
-    verified: boolean
+    verified: boolean,
+    profilePhotoPublicId: string
 }
 
 export interface ILog extends mongoose.Document {
@@ -150,7 +151,8 @@ export interface UserResponse {
     profilePhoto: string,
     password: string,
     verifyKey: string,
-    verified: boolean
+    verified: boolean,
+    profilePhotoPublicId: string
 }
 
 export interface OkayResponse {

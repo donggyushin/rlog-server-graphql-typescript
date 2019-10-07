@@ -20,6 +20,7 @@ var UserSchema = new mongoose_1.default.Schema({
         unique: true
     },
     profilePhoto: String,
+    profilePhotoPublicId: String,
     password: {
         type: String,
         required: true,

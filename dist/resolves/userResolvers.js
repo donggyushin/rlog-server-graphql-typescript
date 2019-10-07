@@ -43,6 +43,7 @@ var user_1 = __importDefault(require("../models/user"));
 var log_1 = __importDefault(require("../models/log"));
 var generateVerifyKey_1 = require("../utils/generateVerifyKey");
 var sendMessage_1 = require("../utils/sendMessage");
+var cloudinary_1 = __importDefault(require("../cloudinary/cloudinary"));
 // Mutations
 exports.verifyUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, verifyKey, user, verified;
@@ -101,16 +102,25 @@ exports.updateUserPassword = function (parent, args) { return __awaiter(void 0, 
     });
 }); };
 exports.updateUserProfileImage = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, profileImage, user;
+    var id, profileImage, profileImagePublicId, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = args.id, profileImage = args.profileImage;
+                id = args.id, profileImage = args.profileImage, profileImagePublicId = args.profileImagePublicId;
+                console.log('profile image:', profileImage);
+                console.log('profile image public id: ', profileImagePublicId);
                 return [4 /*yield*/, user_1.default.findById(id)];
             case 1:
                 user = _a.sent();
+                if (user.profilePhotoPublicId) {
+                    cloudinary_1.default.uploader.destroy(user.profilePhotoPublicId);
+                }
                 user.profilePhoto = profileImage;
-                user.save();
+                user.profilePhotoPublicId = profileImagePublicId;
+                return [4 /*yield*/, user.save()];
+            case 2:
+                _a.sent();
+                console.log('updated user:', user);
                 return [2 /*return*/, user];
         }
     });

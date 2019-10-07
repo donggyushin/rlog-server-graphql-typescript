@@ -42,6 +42,7 @@ router.post('/image-to-cloudinary', (req, res) => {
     cloudinary.uploader.upload(imageFile.tempFilePath, (err, result) => {
         if (err) {
             console.log('error:', err)
+            console.log('result:', result)
             res.json({
                 imageUrl: null,
                 publicId: null

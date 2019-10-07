@@ -3,6 +3,7 @@ import { IUser, UserResponse, ILog, logResponse } from '../types/types';
 import LogModel from '../models/log';
 import { generateVerifyKeyString } from '../utils/generateVerifyKey'
 import { sendSMSMEssage } from '../utils/sendMessage';
+import cloudinary from '../cloudinary/cloudinary';
 
 // Mutations
 
@@ -37,10 +38,17 @@ export const updateUserPassword = async (parent, args): Promise<UserResponse> =>
 }
 
 export const updateUserProfileImage = async (parent, args): Promise<UserResponse> => {
-    const { id, profileImage } = args;
+    const { id, profileImage, profileImagePublicId } = args;
+    console.log('profile image:', profileImage);
+    console.log('profile image public id: ', profileImagePublicId);
     const user = await UserModel.findById(id)
+    if (user.profilePhotoPublicId) {
+        cloudinary.uploader.destroy(user.profilePhotoPublicId)
+    }
     user.profilePhoto = profileImage
-    user.save()
+    user.profilePhotoPublicId = profileImagePublicId
+    await user.save()
+    console.log('updated user:', user);
     return user
 }
 

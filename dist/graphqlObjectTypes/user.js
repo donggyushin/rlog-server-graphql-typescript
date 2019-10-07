@@ -14,6 +14,9 @@ var UserType = new graphql_1.GraphQLObjectType({
         email: { type: graphql_1.GraphQLString },
         phone: { type: graphql_1.GraphQLString },
         profilePhoto: { type: graphql_1.GraphQLString },
+        profilePhotoPublicId: {
+            type: graphql_1.GraphQLString
+        },
         password: { type: graphql_1.GraphQLString },
         logs: {
             type: new graphql_1.GraphQLList(log_1.default),

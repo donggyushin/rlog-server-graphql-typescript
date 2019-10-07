@@ -10,6 +10,9 @@ const UserType: GraphQLObjectType = new GraphQLObjectType({
         email: { type: GraphQLString },
         phone: { type: GraphQLString },
         profilePhoto: { type: GraphQLString },
+        profilePhotoPublicId: {
+            type: GraphQLString
+        },
         password: { type: GraphQLString },
         logs: {
             type: new GraphQLList(LogType),

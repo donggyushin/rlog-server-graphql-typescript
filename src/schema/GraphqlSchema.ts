@@ -127,7 +127,8 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
             type: UserType,
             args: {
                 id: { type: new GraphQLNonNull(GraphQLID) },
-                profileImage: { type: GraphQLString }
+                profileImage: { type: GraphQLString },
+                profileImagePublicId: { type: GraphQLString }
             },
             resolve: updateUserProfileImage
         },

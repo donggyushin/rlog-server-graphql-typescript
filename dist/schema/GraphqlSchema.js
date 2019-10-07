@@ -128,7 +128,8 @@ var RootMutation = new graphql_1.GraphQLObjectType({
             type: user_1.default,
             args: {
                 id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) },
-                profileImage: { type: graphql_1.GraphQLString }
+                profileImage: { type: graphql_1.GraphQLString },
+                profileImagePublicId: { type: graphql_1.GraphQLString }
             },
             resolve: userResolvers_1.updateUserProfileImage
         },
