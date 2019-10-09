@@ -251,19 +251,27 @@ export const newLog = async (parent, args): Promise<logResponse> => {
 
     const theLatestLogArray = await LogModel.find({ userId }).limit(1).sort([['date', -1]]);
     const theLatestLog = theLatestLogArray[0]
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    const day = new Date().getDate();
     const log = await new LogModel({
         title,
         userId,
         image,
         private: privateAsArgs,
         imagePublicId,
-        private2: privateAsArgs
+        private2: privateAsArgs,
+        year,
+        month,
+        day
     })
     if (theLatestLog) {
         theLatestLog.nextLogId = log.id;
         log.previousLogId = theLatestLog.id;
         await theLatestLog.save()
     }
+
+
 
 
 

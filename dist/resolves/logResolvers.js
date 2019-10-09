@@ -371,7 +371,7 @@ exports.changeLogTitle = function (parent, args) { return __awaiter(void 0, void
     });
 }); };
 exports.newLog = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
-    var title, userId, image, time, privateAsArgs, imagePublicId, theLatestLogArray, theLatestLog, log, logData;
+    var title, userId, image, time, privateAsArgs, imagePublicId, theLatestLogArray, theLatestLog, year, month, day, log, logData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -380,13 +380,19 @@ exports.newLog = function (parent, args) { return __awaiter(void 0, void 0, void
             case 1:
                 theLatestLogArray = _a.sent();
                 theLatestLog = theLatestLogArray[0];
+                year = new Date().getFullYear();
+                month = new Date().getMonth() + 1;
+                day = new Date().getDate();
                 return [4 /*yield*/, new log_1.default({
                         title: title,
                         userId: userId,
                         image: image,
                         private: privateAsArgs,
                         imagePublicId: imagePublicId,
-                        private2: privateAsArgs
+                        private2: privateAsArgs,
+                        year: year,
+                        month: month,
+                        day: day
                     })];
             case 2:
                 log = _a.sent();
