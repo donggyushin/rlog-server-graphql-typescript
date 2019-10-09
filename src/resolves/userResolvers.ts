@@ -7,6 +7,20 @@ import cloudinary from '../cloudinary/cloudinary';
 
 // Mutations
 
+export const deleteUserProfileImageResolver = async (parent, args): Promise<UserResponse> => {
+    const { userId } = args;
+    const user = await UserModel.findById(userId);
+
+    // Delete user profile image from cloudinary server
+    if (user.profilePhotoPublicId) {
+        cloudinary.uploader.destroy(user.profilePhotoPublicId)
+    }
+
+    user.profilePhoto = null;
+    user.save()
+    return user
+}
+
 export const verifyUser = async (parent, args): Promise<UserResponse> => {
     const { userId, verifyKey } = args;
     const user = await UserModel.findById(userId);

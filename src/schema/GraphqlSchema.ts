@@ -2,7 +2,7 @@ import { GraphQLObjectType, GraphQLID, GraphQLSchema, GraphQLNonNull, GraphQLStr
 import TestType from '../graphqlObjectTypes/test'
 import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
-import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword, allocateVerifyKeyToUser, verifyUser } from '../resolves/userResolvers'
+import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword, allocateVerifyKeyToUser, verifyUser, deleteUserProfileImageResolver } from '../resolves/userResolvers'
 import LogType from '../graphqlObjectTypes/log'
 import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog, deleteAllLogs, getMyLogs, deleteALogV2, deleteAllDatasFromLog } from '../resolves/logResolvers'
 import LoginType from '../graphqlObjectTypes/login'
@@ -14,7 +14,6 @@ import DestoryType from '../graphqlObjectTypes/destoryType'
 import { destroyImage } from '../resolves/destroyResolvers'
 import LengthType from '../graphqlObjectTypes/length'
 import { getMyLogsLength } from '../resolves/lengthResolvers'
-import UploadImageToCloudinaryType from '../graphqlObjectTypes/uploadImageToCloudinary'
 
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
@@ -100,6 +99,13 @@ const RootMutation: GraphQLObjectType = new GraphQLObjectType({
                 password: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: addNewUser
+        },
+        deleteUserProfileImage: {
+            type: UserType,
+            args: {
+                userId: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: deleteUserProfileImageResolver
         },
         allocateVerifyKeyToUser: {
             type: UserType,

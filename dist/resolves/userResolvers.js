@@ -45,6 +45,25 @@ var generateVerifyKey_1 = require("../utils/generateVerifyKey");
 var sendMessage_1 = require("../utils/sendMessage");
 var cloudinary_1 = __importDefault(require("../cloudinary/cloudinary"));
 // Mutations
+exports.deleteUserProfileImageResolver = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userId = args.userId;
+                return [4 /*yield*/, user_1.default.findById(userId)];
+            case 1:
+                user = _a.sent();
+                // Delete user profile image from cloudinary server
+                if (user.profilePhotoPublicId) {
+                    cloudinary_1.default.uploader.destroy(user.profilePhotoPublicId);
+                }
+                user.profilePhoto = null;
+                user.save();
+                return [2 /*return*/, user];
+        }
+    });
+}); };
 exports.verifyUser = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, verifyKey, user, verified;
     return __generator(this, function (_a) {

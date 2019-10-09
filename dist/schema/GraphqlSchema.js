@@ -102,6 +102,13 @@ var RootMutation = new graphql_1.GraphQLObjectType({
             },
             resolve: userResolvers_1.addNewUser
         },
+        deleteUserProfileImage: {
+            type: user_1.default,
+            args: {
+                userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
+            },
+            resolve: userResolvers_1.deleteUserProfileImageResolver
+        },
         allocateVerifyKeyToUser: {
             type: user_1.default,
             args: {
