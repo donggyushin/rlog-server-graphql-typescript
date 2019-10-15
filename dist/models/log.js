@@ -39,6 +39,8 @@ var LogSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: true
     },
+    // private 은 클라이언트에서 지정된 약속어이기 때문에 접근이 불가능.
+    // 그래서 private2 를 새로 선언
     private2: {
         type: Boolean,
         default: true

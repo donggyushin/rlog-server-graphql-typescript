@@ -64,12 +64,23 @@ var RootQuery = new graphql_1.GraphQLObjectType({
             },
             resolve: logResolvers_1.getMyLogs
         },
+        getAllPublicLogs: {
+            type: new graphql_1.GraphQLList(log_1.default),
+            args: {
+                page: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLInt) }
+            },
+            resolve: logResolvers_1.getAllPublicLogs
+        },
         getMyLogsLength: {
             type: length_1.default,
             args: {
                 userId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLString) }
             },
             resolve: lengthResolvers_1.getMyLogsLength
+        },
+        getAllPublicLogsLength: {
+            type: length_1.default,
+            resolve: lengthResolvers_1.getAllPublicLogsLength
         }
     }
 });

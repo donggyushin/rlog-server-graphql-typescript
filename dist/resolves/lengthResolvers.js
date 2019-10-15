@@ -58,3 +58,19 @@ exports.getMyLogsLength = function (parent, args) { return __awaiter(void 0, voi
         }
     });
 }); };
+exports.getAllPublicLogsLength = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var allPublicLogs, length;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, log_1.default.find({
+                    private2: false
+                })];
+            case 1:
+                allPublicLogs = _a.sent();
+                length = allPublicLogs.length;
+                return [2 /*return*/, {
+                        length: length
+                    }];
+        }
+    });
+}); };

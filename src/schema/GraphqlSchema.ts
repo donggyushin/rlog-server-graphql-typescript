@@ -4,7 +4,7 @@ import UserType from '../graphqlObjectTypes/user'
 import { testResolver, addNewTest } from '../resolves/testResolves'
 import { allUsers, addNewUser, getUser, deleteUser, updateUserProfileImage, updateUserPassword, allocateVerifyKeyToUser, verifyUser, deleteUserProfileImageResolver } from '../resolves/userResolvers'
 import LogType from '../graphqlObjectTypes/log'
-import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog, deleteAllLogs, getMyLogs, deleteALogV2, deleteAllDatasFromLog } from '../resolves/logResolvers'
+import { getAllLogs, newLog, getALog, changeLogTitle, changeLogImage, deleteALog, deleteAllLogs, getMyLogs, deleteALogV2, deleteAllDatasFromLog, getAllPublicLogs } from '../resolves/logResolvers'
 import LoginType from '../graphqlObjectTypes/login'
 import { loginResolve } from '../resolves/loginResolvers'
 import BlockType from '../graphqlObjectTypes/block'
@@ -13,7 +13,7 @@ import OkayResponseType from '../graphqlObjectTypes/okayResponse'
 import DestoryType from '../graphqlObjectTypes/destoryType'
 import { destroyImage } from '../resolves/destroyResolvers'
 import LengthType from '../graphqlObjectTypes/length'
-import { getMyLogsLength } from '../resolves/lengthResolvers'
+import { getMyLogsLength, getAllPublicLogsLength } from '../resolves/lengthResolvers'
 
 
 const RootQuery: GraphQLObjectType = new GraphQLObjectType({
@@ -61,12 +61,23 @@ const RootQuery: GraphQLObjectType = new GraphQLObjectType({
             },
             resolve: getMyLogs
         },
+        getAllPublicLogs: {
+            type: new GraphQLList(LogType),
+            args: {
+                page: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: getAllPublicLogs
+        },
         getMyLogsLength: {
             type: LengthType,
             args: {
                 userId: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: getMyLogsLength
+        },
+        getAllPublicLogsLength: {
+            type: LengthType,
+            resolve: getAllPublicLogsLength
         }
     }
 })

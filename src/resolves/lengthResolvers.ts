@@ -10,3 +10,14 @@ export const getMyLogsLength = async (parent, args) => {
         length
     }
 }
+
+export const getAllPublicLogsLength = async (parent, args) => {
+    const allPublicLogs = await LogModel.find({
+        private2: false
+    })
+    const length = allPublicLogs.length;
+    return {
+        length
+    }
+
+}

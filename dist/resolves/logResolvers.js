@@ -444,6 +444,22 @@ exports.getMyLogs = function (parent, args) { return __awaiter(void 0, void 0, v
         }
     });
 }); };
+exports.getAllPublicLogs = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
+    var page, skipNumber, allPublicLogs;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                page = args.page;
+                skipNumber = 50 * (page - 1);
+                return [4 /*yield*/, log_1.default.find({
+                        private2: false
+                    }).limit(50).skip(skipNumber).sort([['date', -1]])];
+            case 1:
+                allPublicLogs = _a.sent();
+                return [2 /*return*/, allPublicLogs];
+        }
+    });
+}); };
 exports.getLogData = function (parent, args) { return __awaiter(void 0, void 0, void 0, function () {
     var id, logData;
     return __generator(this, function (_a) {

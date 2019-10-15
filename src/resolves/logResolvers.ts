@@ -303,6 +303,16 @@ export const getMyLogs = async (parent, args): Promise<logResponse[]> => {
     return logs
 }
 
+export const getAllPublicLogs = async (parent, args) => {
+    const { page } = args;
+    const skipNumber: number = 50 * (page - 1);
+    const allPublicLogs = await LogModel.find({
+        private2: false
+    }).limit(50).skip(skipNumber).sort([['date', -1]])
+    return allPublicLogs
+}
+
+
 export const getLogData = async (parent, args): Promise<LogDataResponse> => {
     const { id } = parent;
     const logData = await LogDataModel.findOne({
