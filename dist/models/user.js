@@ -27,7 +27,7 @@ var UserSchema = new mongoose_1.default.Schema({
     },
     verified: {
         type: Boolean,
-        default: false
+        default: true
     },
     verifyKey: {
         type: String
